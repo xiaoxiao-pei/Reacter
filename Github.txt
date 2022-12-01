@@ -1,0 +1,3 @@
+1. clone main to your computer
+  (cd... location where you want the cloned directory)
+  $ git clone https://github.com/xiaoxiao-pei/Reacter.git   
