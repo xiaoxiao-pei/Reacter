@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../css/App.css'
-import { FaUserAlt, FaEnvelope, FaLock } from "react-icons/fa";//icons from fontawesome
+import { FaUserAlt, FaEnvelope, FaLock } from "react-icons/fa"; //icons from react icon font awesome
 import Button from '@mui/material/Button';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 

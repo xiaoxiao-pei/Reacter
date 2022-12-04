@@ -1,13 +1,11 @@
 import '../css/header.css'
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Navbar from 'react-bootstrap/Navbar';
 import Container from 'react-bootstrap/Container';
 import { useNavigate } from 'react-router-dom';
-//import { LoggedInContext } from "../App"
-//import LogoutButton from './LogoutButton';
-//import RegisterButton from './RegisterButton';
+import { ReactContext } from "../App";
 
 
 
@@ -15,11 +13,7 @@ import { useNavigate } from 'react-router-dom';
 function Header() {
 
     const navigate = useNavigate();
-
-    const showRegister = () => {
-        navigate("/register");
-    };
-    //const [isLoggedIn, setIsLoggedIn] = React.useContext(LoggedInContext);
+    const [isAdminLoggedIn, setIsAdminLoggedIn, isUserLoggedIn, setIsUserLoggedIn] = React.useContext(ReactContext);
 
     return (
         <div >
@@ -39,15 +33,32 @@ function Header() {
                                 <NavDropdown.Item href="#">Log out </NavDropdown.Item>
                             </NavDropdown>
                         </Nav>
-                       {/*} {{ isLoggedIn  && <LogoutButton />}
-                        {!isLoggedIn && <RegisterButton />} */}
-                        <button onClick={showRegister}>Register</button>
+
+
+                        {/* if not login, show Register and login button */}
+                        {!(isAdminLoggedIn || isUserLoggedIn) &&
+                            <div>
+                                <button onClick={() => { navigate("/register") }}>Register</button>
+                                <button onClick={() => { navigate("/signin"); }}>Login</button>
+                            </div>
+                        }
+
+                        {/* if is login, show logout button */}
+                        {(isAdminLoggedIn || isUserLoggedIn) &&
+                            <button
+                                onClick={() => {
+                                    setIsAdminLoggedIn(false);
+                                    setIsUserLoggedIn(false);
+                                    localStorage.clear("userName");
+                                }} >
+                                logout</button>}
+                                
                     </Navbar.Collapse>
                 </Container>
             </Navbar>
             <div className='container my-3'>
-                <h3>
-                    {/* {isLoggedIn ? "Welcome!" : "Please login"} */}
+                <h3 style={{ color: 'white' }}>
+                    {localStorage.getItem('userName') ? "Welcome!" + localStorage.getItem('userName') : "Please login"}
                 </h3>
             </div>
 

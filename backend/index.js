@@ -199,21 +199,25 @@ app.post("/users/register", async (request, response) => {
 
 /* Login */
 app.post("/users/login", async (request, response) => {
-    const username = request.body.username;
+    const email = request.body.email;
     const password = request.body.password;
     try {
-        if (username && password) {
+        if (email && password) {
             // Check to see if the user already exists. If not, then create it.
-            const user = await userModel.findOne({ username: username });
+            const user = await userModel.findOne({ userEmail: email });
             if (!user) {
-                console.log("Invalid login - username " + username + " doesn't exist.");
+                console.log("Invalid login - email " + email + " doesn't exist.");
                 response.send({ success: false });
                 return;
             } else {
-                const isSame = await bcrypt.compare(password, user.password);
+                const isSame = await bcrypt.compare(password, user.userPassword);
                 if (isSame) {
                     console.log("Successful login");
-                    response.send({ success: true });
+                    response.send({ 
+                        success: true, 
+                        "userID": user._id , 
+                        "userName": user.userName,
+                        isAdmin : user.UserIsAdmin});
                     return;
                 }
             }

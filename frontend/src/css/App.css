@@ -50,7 +50,7 @@ footer {
   padding: 10px 0 10px 0;
 }
 
-.regisForm {
+.regisForm, .loginForm {
   margin: 10px auto;
   background-color: white;
   border-radius: 10px;
