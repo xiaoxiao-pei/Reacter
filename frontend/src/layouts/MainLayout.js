@@ -1,11 +1,12 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import Header from '../components/Header';
-import Footer from '../components/Footer';
+import Header from "./Header";
+import Footer from "./Footer";
 import Container from 'react-bootstrap/Container';
+import '../css/App.css'
 
 function MainLayout() {
-    return <div >
+    return <div  className="pageBody" >
         <Header />
         <Container>
              <Outlet />

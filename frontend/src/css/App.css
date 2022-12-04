@@ -35,6 +35,10 @@
   }
 }
 
+.pageBody{
+  background-color:black;
+}
+
 footer {
   position: absolute;
   left: 0;
@@ -44,4 +48,38 @@ footer {
   text-align: center;
   color:#22A39F;
   padding: 10px 0 10px 0;
+}
+
+.regisForm {
+  margin: 10px auto;
+  background-color: white;
+  border-radius: 10px;
+  padding: 0px 0px;
+
+}
+
+.formTitle{
+  background-color: #C2DCB1;
+  border-radius: 10px 10px 0 0;
+  
+}
+
+.form__input{
+  padding: 10px 0 5px 5px;
+  border:none;
+  border-bottom: solid 1px black;
+}
+
+.form_icon{
+  color:#C2DCB1;
+  font-size:150%; 
+  margin-right:20px;
+}
+
+.form_button{
+  margin: 20px auto;
+}
+
+.inputErr{
+  color: red;
 }

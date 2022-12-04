@@ -1,8 +1,8 @@
 import React, { useRef } from "react";
-import { LoggedInContext } from "../App";
+//import { LoggedInContext } from "../App";
 
 function LoginForm() {
-    const [isLoggedIn, setIsLoggedIn] = React.useContext(LoggedInContext);
+    //const [isLoggedIn, setIsLoggedIn] = React.useContext(LoggedInContext);
     const usernameRef = useRef();
     const passwordRef = useRef();
     const handleSubmit = (event) => {
@@ -21,7 +21,7 @@ function LoginForm() {
             .then((data) => data.json())
             .then((json) => {
                 alert(JSON.stringify(json));
-                json.success ? setIsLoggedIn(true) : setIsLoggedIn(false);
+                //json.success ? setIsLoggedIn(true) : setIsLoggedIn(false);
             });
     }
     return (

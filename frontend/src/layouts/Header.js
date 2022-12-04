@@ -4,14 +4,22 @@ import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Navbar from 'react-bootstrap/Navbar';
 import Container from 'react-bootstrap/Container';
-import { LoggedInContext } from "../App"
-import LogoutButton from './LogoutButton';
-import RegisterButton from './RegisterButton';
+import { useNavigate } from 'react-router-dom';
+//import { LoggedInContext } from "../App"
+//import LogoutButton from './LogoutButton';
+//import RegisterButton from './RegisterButton';
+
+
 
 
 function Header() {
 
-    const [isLoggedIn, setIsLoggedIn] = React.useContext(LoggedInContext);
+    const navigate = useNavigate();
+
+    const showRegister = () => {
+        navigate("/register");
+    };
+    //const [isLoggedIn, setIsLoggedIn] = React.useContext(LoggedInContext);
 
     return (
         <div >
@@ -23,7 +31,6 @@ function Header() {
                         <Nav className="me-auto">
                             <Nav.Link href="/"> Home</Nav.Link>
                             <Nav.Link href="/about">About</Nav.Link>
-                            <Nav.Link href="/contact">Contact</Nav.Link>
                             <NavDropdown title="Account" id="collasible-nav-dropdown">
                                 <NavDropdown.Item href="#">Your profile</NavDropdown.Item>
                                 <NavDropdown.Item href="#">Your projects</NavDropdown.Item>
@@ -32,17 +39,18 @@ function Header() {
                                 <NavDropdown.Item href="#">Log out </NavDropdown.Item>
                             </NavDropdown>
                         </Nav>
-                        {isLoggedIn  && <LogoutButton />}
-                        {!isLoggedIn && <RegisterButton/>}
+                       {/*} {{ isLoggedIn  && <LogoutButton />}
+                        {!isLoggedIn && <RegisterButton />} */}
+                        <button onClick={showRegister}>Register</button>
                     </Navbar.Collapse>
                 </Container>
             </Navbar>
             <div className='container my-3'>
                 <h3>
-                     {isLoggedIn ? "Welcome!" : "Please login"}
-                </h3>        
+                    {/* {isLoggedIn ? "Welcome!" : "Please login"} */}
+                </h3>
             </div>
-           
+
         </div>
     );
 }

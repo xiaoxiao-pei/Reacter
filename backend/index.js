@@ -151,27 +151,42 @@ app.delete("/users/:username", async (req, res) => {
 
 });
 
-/* Register */
+/* User Registration*/
 app.post("/users/register", async (request, response) => {
     const id = request.body.id;
-    const username = request.body.username;
-    const password = request.body.password;
+    const userName = request.body.userName;
+    const userEmail = request.body.userEmail;
+    const userPassword = request.body.userPassword;
+    const userMotto = request.body.userMotto;
     try {
         if (
-            username && validator.isAlphanumeric(username) &&
-            password && validator.isStrongPassword(password)) {
+            userName && validator.isAlphanumeric(userName) &&
+            userPassword && validator.isStrongPassword(userPassword)
+        ) {
+            console.log(userName);
             // Check to see if the user already exists. If not, then create it.
-            const user = await userModel.findOne({ username: username });
+            const user = await userModel.findOne({ userName: userName });
+            const email = await userModel.findOne({ userEmail: userEmail });
             if (user) {
-                console.log("Invalid registration - username " + username + " already exists.");
+                console.log("Invalid registration - username " + userName + " already exists.");
                 response.send({ success: false });
                 return;
+
+            } else if (email) {
+                console.log("Invalid registration - email " + userEmail + " already exists.");
+                response.send({ success: false });
+                return;
+
             } else {
-                hashedPassword = await bcrypt.hash(password, saltRounds);
-                console.log("Registering username " + username);
+                hashedPassword = await bcrypt.hash(userPassword, saltRounds);
+                console.log("Registering username " + userName);
                 const userToSave = {
-                    username: username,
-                    password: hashedPassword
+                    userName: userName,
+                    userEmail: userEmail,
+                    userPassword: hashedPassword,
+                    userMotto: userMotto,
+                    UserJoinTime: new Date(),
+                    UserIsAdmin: false,
                 };
                 await userModel.create(userToSave);
                 response.send({ success: true });
