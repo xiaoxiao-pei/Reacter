@@ -6,6 +6,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { ReactContext } from "../App";
 
+// button style for material Button
 const theme = createTheme({
     palette: {
         primary: {
@@ -15,13 +16,12 @@ const theme = createTheme({
     },
 });
 
-
 function LoginForm() {
 
     const [isAdminLoggedIn, setIsAdminLoggedIn, isUserLoggedIn, setIsUserLoggedIn] = React.useContext(ReactContext);
 
     const navigate = useNavigate();
-    //const [isLoggedIn, setIsLoggedIn] = React.useContext(LoggedInContext);
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -39,18 +39,22 @@ function LoginForm() {
 
         })
             .then((data) => data.json())
-            .then((json) => {
+            .then((json) => { //after login, store userName and userId to localStorage, set isAdminLoggedIn or isUserLoggedIn true
                 alert(JSON.stringify(json));
                 localStorage.setItem("userName", json.userName);
                 localStorage.setItem("userID", json.userID);
-                json.isAdmin ? setIsAdminLoggedIn(true) : setIsUserLoggedIn(true);
-                navigate('/');
-                //json.success ? setIsLoggedIn(true) : setIsLoggedIn(false);
+                if (json.isAdmin){
+                    setIsAdminLoggedIn(true); 
+                    navigate('/');
+                } else{
+                    setIsUserLoggedIn(true);
+                    navigate('/');
+                } 
             });
     }
     return (
         <div className='row'>
-            <form className="loginForm col-8 col-md-6 col-lg-5 col-xl-4 text-center px-0" onSubmit={handleSubmit}>
+            <form className="reactForm col-8 col-md-6 col-lg-5 col-xl-4 text-center px-0" onSubmit={handleSubmit}>
                 <div className="form-body">
                     <div>
                         <h3 className='formTitle py-3'>Please Log In</h3>
@@ -62,6 +66,10 @@ function LoginForm() {
                     <div >
                         <FaLock className='form_icon' />
                         <input className="form__input mb-3" type="password" placeholder="Password" value={password} onChange={(event) => setPassword(event.target.value)} />
+                    </div>
+                    
+                    <div className='d-flex justify-content-end mx-5'>
+                        <a className='mx-5' href='/login/forgetPWD'>Forget Password?</a>
                     </div>
 
                     <div className='form_button mb-4'>

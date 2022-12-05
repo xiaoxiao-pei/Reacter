@@ -1,5 +1,5 @@
 import '../css/header.css'
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Navbar from 'react-bootstrap/Navbar';
@@ -34,12 +34,16 @@ function Header() {
                             </NavDropdown>
                         </Nav>
 
+                        {isUserLoggedIn && 
+                            <button onClick={() => { navigate("/user/profile") }}>Profile</button>
+                        }
+
 
                         {/* if not login, show Register and login button */}
                         {!(isAdminLoggedIn || isUserLoggedIn) &&
                             <div>
                                 <button onClick={() => { navigate("/register") }}>Register</button>
-                                <button onClick={() => { navigate("/signin"); }}>Login</button>
+                                <button onClick={() => { navigate("/login"); }}>Login</button>
                             </div>
                         }
 

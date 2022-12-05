@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+
 const UserSchema = new mongoose.Schema({
     userName: {
         type: String,
@@ -22,14 +23,22 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: false,
     },
-    UserJoinTime: {
+    userJoinTime: {
         type: Date,
         required: true,
     },
-    UserIsAdmin:{
+    userIsAdmin:{
         type: Boolean,
         required: true,
     },
+    userPostCount:{
+        type:Number,
+        required: true,
+    },
+    userIsActive:{
+        type: Boolean,
+        required: true,
+    }
 });
 // Mongoose will assume there is a collection called the plural of this name (i.e., 'users' in this case).
 const User = mongoose.model("User", UserSchema);

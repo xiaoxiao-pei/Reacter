@@ -90,7 +90,7 @@ function RegistrationForm() {
 
     return (
         <div className='row'>
-            <form className="regisForm col-10 col-md-6 text-center px-0" onSubmit={handleSubmit}>
+            <form className="reactForm col-10 col-md-6 text-center px-0" onSubmit={handleSubmit}>
                 <div className="form-body">
                     <div>
                         <h3 className='formTitle py-3'>Create Your Account</h3>

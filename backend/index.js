@@ -13,6 +13,13 @@ const app = express();
 const port = 3001; // Must be different than the port of the React app
 app.use(cors()); // https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
 
+//foget password token
+const jsonWebToken = require("jsonwebtoken");
+var nodemailer = require("nodemailer");
+
+const JASONWEBTOKEN_SECRET =
+    "hvdvay6ert72839289()aiyg8t87qt72393293883uhefiuh78ttq3ifi78272jbkj?[]]pou89ywe";
+
 mongoose.connect("mongodb+srv://mongoxiaopei:" + process.env.MONGODB_PWD +
     "@cluster0.xx3ffbz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
     {
@@ -32,124 +39,7 @@ app.use(express.json()); // Allows express to read a request body
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-/*API GET*/
-app.get('/users', async (req, res) => {
-    try {
-        const users = await userModel.find();
-        res.send(users);
-    } catch (err) {
-        console.log(err);
-    }
 
-});
-
-/* API POST request using body /users */
-app.post("/users", async (req, res) => {
-    const username = req.body.username;
-    const password = req.body.password;
-    const user = {
-        username: username,
-        password: password,
-    };
-    try {
-        await userModel.create(user);
-        res.send(user);
-    } catch (err) {
-        console.log(err);
-    }
-});
-
-/* An API get request using query parameters to /users?username=XXX */
-app.get("/user", async (req, res) => {
-    const username = req.query.username;
-    try {
-        const user = await userModel.findOne({ username: username });
-        res.send(user);
-    } catch (err) {
-        console.log(err);
-    }
-
-});
-
-/* An API get request using URL path parameters 
-to /users/:username */
-app.get("/users/:username", async (req, res) => {
-    const username = req.params.username;
-    try {
-        const user = await userModel.findOne({ username: username });
-        res.send(user);
-    } catch (err) {
-        console.log(err);
-    }
-
-});
-
-/* An API post request using body to get user 
-/users/get */
-app.post("/users/get", async (req, res) => {
-    const username = req.body.username;
-    try {
-        const user = await userModel.findOne({ username: username });
-        res.send(user);
-    } catch (err) {
-        console.log(err);
-    }
-
-});
-
-/* An API post request using body /users. 
-Replaces the entire user. */
-app.put("/users", async (req, res) => {
-    const password = req.body.password;
-    const username = req.body.username;
-    const user = {
-        username: username,
-        password: password,
-    };
-    try {
-        const results = await userModel.replaceOne({
-            username: username
-        }, user);
-        console.log("matched: " + results.matchedCount);
-        console.log("modified: " +
-            results.modifiedCount);
-        res.send(results);
-    } catch (err) {
-        console.log(err);
-    }
-
-});
-
-/* An API post request using body /users/username 
-that changes a single field */
-app.patch("/users/:username/password", async (req, res) => {
-    const username = req.params.username;
-    const password = req.body.password;
-    try {
-        const results = await userModel.updateOne({
-            username: username
-        }, { password: password });
-        console.log("matched: " + results.matchedCount);
-        console.log("modified: " + results.modifiedCount);
-        res.send(results);
-    } catch (err) {
-        console.log(err);
-    }
-
-});
-
-/* An API delete request using URL path 
-parameters to /users/:username */
-app.delete("/users/:username", async (req, res) => {
-    const username = req.params.username;
-    try {
-        const results = await userModel.deleteOne({ username: username });
-        res.send(results);
-    } catch (err) {
-        console.log(err);
-    }
-
-});
 
 /* User Registration*/
 app.post("/users/register", async (request, response) => {
@@ -185,8 +75,10 @@ app.post("/users/register", async (request, response) => {
                     userEmail: userEmail,
                     userPassword: hashedPassword,
                     userMotto: userMotto,
-                    UserJoinTime: new Date(),
-                    UserIsAdmin: false,
+                    userJoinTime: new Date(),
+                    userIsAdmin: false,
+                    userPostCount:0,
+                    userIsActive: true,
                 };
                 await userModel.create(userToSave);
                 response.send({ success: true });
@@ -213,11 +105,12 @@ app.post("/users/login", async (request, response) => {
                 const isSame = await bcrypt.compare(password, user.userPassword);
                 if (isSame) {
                     console.log("Successful login");
-                    response.send({ 
-                        success: true, 
-                        "userID": user._id , 
+                    response.send({ // return userID, userName, isAdmin in Json format
+                        success: true,
+                        "userID": user._id,
                         "userName": user.userName,
-                        isAdmin : user.UserIsAdmin});
+                        isAdmin: user.userIsAdmin
+                    });
                     return;
                 }
             }
@@ -229,6 +122,131 @@ app.post("/users/login", async (request, response) => {
 });
 
 
+//forget password
+app.post("/forgotPassword", async (request, response) => {
+    const email = request.body.email;
+    try {
+        const user = await userModel.findOne({ email });
+        if (!user) {
+            return res.json({ status: "User Not Exists!!" });
+        }
+
+        const secret = JASONWEBTOKEN_SECRET + user.password;
+        const token = jsonWebToken.sign({ email: user.userEmail, id: user._id }, secret, { expiresIn: "5m", });
+        const link = `http://localhost:3001/reset-password/${user._id}/${token}`;//link sent to email
+
+        var transporter = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+                type: 'OAuth2',
+                user: 'reacter2022@gmail.com',
+                pass: 'FSDreacter2022',
+                clientId: '256342027446-pal8gb5oold4d7ifsl70a9vans7gmnqi.apps.googleusercontent.com',
+                clientSecret: "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",
+                refreshToken: "1//04IpqdPyWj-n6CgYIARAAGAQSNwF-L9IrMVe7CiKsbr8t8Z4G6cXetEgUYg_6d0ZQJsrrc33B1Uu1Iik5I2o1wXwyRjNft6aqwHY"
+            },
+        });
+
+        var mailOptions = {
+            from: "reacter2022@gmail.com",
+            to: "pxtoday@hotmail.com",
+            subject: "Password Reset",
+            text: link,
+        };
+
+        transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log("Email sent successfully ");
+                response.send({ success: true });
+            }
+        });
+        return;
+
+    } catch (error) {
+        console.log(error.message);
+    }
+    response.send({ success: false });
+});
+
+// 
+app.get("/reset-password/:id/:token", async (request, response) => {
+    const { id, token } = request.params;
+    console.log(req.params);
+    const user = await userModel.findOne({ _id: id });
+    if (!user) {
+        return response.json({ status: "User Not Exists!!" });
+    }
+    const secret = JASONWEBTOKEN_SECRET + user.userPassword;
+    try {
+        const verify = jsonWebToken.verify(token, secret);
+        response.render("index", { email: verify.email, status: "Not Verified" });
+        response.send({ 
+            success: true,
+            "email": verify.email,
+        });
+    } catch (error) {
+        console.log(error);
+        response.send("Not Verified");
+    }
+});
+
+app.post("/reset-password/:id/:token", async (req, res) => {
+    const { id, token } = req.params;
+    const { password } = req.body;
+
+    const oldUser = await User.findOne({ _id: id });
+    if (!oldUser) {
+        return res.json({ status: "User Not Exists!!" });
+    }
+    const secret = JASONWEBTOKEN_SECRET + user.password;
+    try {
+        const verify = jsonWebToken.verify(token, secret);
+        const encryptedPassword = await bcrypt.hash(password, 10);
+        await User.updateOne(
+            {
+                _id: id,
+            },
+            {
+                $set: {
+                    password: encryptedPassword,
+                },
+            }
+        );
+        res.render("index", { email: verify.email, status: "verified" });
+    } catch (error) {
+        console.log(error);
+        res.json({ status: "Something Went Wrong" });
+    }
+});
+
+/* An API get request using query parameters to /users?_id=XXX */
+app.get("/user", async (req, res) => {
+    const userID = req.query._id;
+    try {
+        const user = await userModel.findOne({ _id: userID });
+        res.send(user);
+    } catch (err) {
+        console.log(err);
+    }
+});
+
+/* update Motto */
+app.patch("/users/:useid/motto", async (req, res) => {
+    const userID = req.params.useid;
+    const motto = req.body.userMotto;
+    try {
+        const results = await userModel.updateOne({
+            _id: userID
+        }, { userMotto: motto });
+        console.log("matched: " + results.matchedCount);
+        console.log("modified: " + results.modifiedCount);
+        res.send(results);
+    } catch (err) {
+        console.log(err);
+    }
+});
 
 
 app.listen(port, () =>
