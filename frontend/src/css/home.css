@@ -1,0 +1,41 @@
+.home {
+  /* background-color: #053e85; */
+  position: relative;
+  margin: auto;
+  padding: 40%;
+  height: 100%;
+}
+.homeContent {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+.text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  left: -1.5rem;
+}
+.you {
+  color: red;
+}
+
+.me {
+  color: yellow;
+}
+
+.and {
+  color: darkgreen;
+}
+
+.other {
+  color: white;
+}
+
+.image {
+  background-image: url("https://i.pcmag.com/imagery/articles/00Cx7vFIetxCuKxQeqPf8mi-27..v1580943857.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100px;
+}
