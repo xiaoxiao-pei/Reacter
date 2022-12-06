@@ -331,9 +331,9 @@ app.delete("/comments/:id", async (req, res) => {
 app.post("/comments/create", async (req, res) => {
   console.log("create comment------------");
   const userId = req.body.userId;
-  console.log(postTitle);
+
   const commentContent = req.body.commentContent;
-  console.log(postTitle);
+
   const commentTime = req.body.commentTime;
   const postId = req.body.postId;
 
@@ -343,7 +343,7 @@ app.post("/comments/create", async (req, res) => {
     commentTime: commentTime,
     postId: postId,
   };
-  await postModel.create(comment);
+  await commentModel.create(comment);
   res.send(comment);
   console.log(comment);
 });

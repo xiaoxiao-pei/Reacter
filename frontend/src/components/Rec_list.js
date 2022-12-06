@@ -32,8 +32,8 @@ function Rec_list() {
   }, []);
 
   return (
-    <div className="recCard">
-      <div className="recCardHead">
+    <div className="recList">
+      <div className="recListHead">
         <h1 style={{ textAlign: "center" }}>Recommended</h1>
       </div>
       {recAuthors.length > 0 &&

@@ -1,8 +1,8 @@
-import React, { useRef } from "react";
-import { IoIosDoneAll } from "react-icons/io";
+import React from "react";
+import { MdOutlineDoneOutline } from "react-icons/md";
 import { useState } from "react";
-
-function NewCommentItem(postId) {
+import "../css/posts.css";
+function NewCommentItem({ postId, updateComList }) {
   // I actually need the whole user object
   //   const user = localStorage.getItem("user");
   const user = {
@@ -12,20 +12,22 @@ function NewCommentItem(postId) {
     userIsAdmin: "false",
     userIsActive: "yes",
     userMotto: "I am Alice2",
-    userphoto: "",
+    userPhoto: "",
     userName: "Alice2",
   };
 
   const [newCom, setNewCom] = useState();
+  const addDate = new Date().toLocaleTimeString();
+  console.log(addDate);
 
-  const commentContentRef = new useRef();
-
-  const submitHandle = () => {
+  const submitHandle = (event) => {
+    console.log("create comment");
+    event.preventDefault();
     fetch("http://localhost:3001/comments/create", {
       method: "POST",
       body: JSON.stringify({
-        userId: user.userId,
-        commentContent: commentContentRef.current.value,
+        userId: user._id,
+        commentContent: newCom,
         commentTime: new Date(),
         postId: postId, // should be postContent
       }),
@@ -33,33 +35,49 @@ function NewCommentItem(postId) {
         "Content-type": "application/json;charset=UTF-8",
       },
     })
-      .then((data) => data.JSON())
-      .then(() => setNewCom(commentContentRef.current.value));
+      .then((data) => data.json())
+      .then((data) => {
+        console.log(data);
+        console.log(newCom);
+      })
+      .then(() => updateComList(newCom));
+  };
+
+  const changeHandle = (e) => {
+    setNewCom(e.target.value);
   };
 
   return (
-    <div>
-      <div className="comment-head">
-        <span
-          style={{
-            backgroudImage: `url(http://localhost:3001/getImg/${user.postPhoto})`,
-          }}
-        ></span>
-        <span>{user.userName}.</span>
+    <div className="commentItem">
+      <div className="commentHead">
+        <div className="commentHeadLeft">
+          <span
+            style={{
+              backgroudImage: `url(http://localhost:3001/getImg/${user.userPhoto})`,
+            }}
+          ></span>
+          <span>{user.userName}</span>
+          <span></span>
+        </div>
+        <div className="commentHeadRight">
+          <span>{addDate}</span>
+        </div>
       </div>
-      <div className="comment-text">
-        {newCom ? (
-          <div>{commentContentRef}</div>
-        ) : (
-          <>
-            <form onSubmit={submitHandle}>
-              <textarea ref={commentContentRef}> </textarea>
-              <IoIosDoneAll type="submit" />
-            </form>
-          </>
-        )}
+
+      <div className="commentBody">
+        <textarea
+          name="newContent"
+          value={newCom}
+          onChange={changeHandle}
+        ></textarea>
       </div>
-      <div className="comment-footer"></div>
+
+      <div className="commentFooter">
+        <MdOutlineDoneOutline
+          className="addCommentDone"
+          onClick={submitHandle}
+        />
+      </div>
     </div>
   );
 }

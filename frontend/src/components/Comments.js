@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-
+import { FiMinusCircle } from "react-icons/fi";
 import CommentItem from "./CommentItem";
 import { MdOutlineAddCircle } from "react-icons/md";
 import "../css/posts.css";
@@ -19,20 +19,31 @@ function Comments({ postId }) {
       .then((data) => data.json())
       .then((data) => {
         data.map((d) => {
-          setCommentList((commentList) => [...commentList, d]);
+          setCommentList([...commentList, d]);
         });
       });
 
-    return setCommentList([]);
+    return () => {
+      setCommentList([]);
+    };
   }, []);
   console.log(commentList);
   // if ueserId does not exist, show the latest 5 posts
 
-  const addComments = () => {
+  const addComment = () => {
     setShowAdd(true);
   };
+  const removeComment = () => {
+    setShowAdd(false);
+  };
+
+  const updateComList = (newComment) => {
+    setCommentList((commentList) => [...commentList, newComment]);
+    setShowAdd(false);
+  };
+
   return (
-    <div className="container">
+    <div className="postComments">
       {/* Title */}
 
       {console.log(commentList)}
@@ -43,9 +54,12 @@ function Comments({ postId }) {
           </div>
         ))}
       {showAdd ? (
-        <NewCommentItem postId={postId} />
+        <>
+          <NewCommentItem postId={postId} updateComList={updateComList} />
+          <FiMinusCircle className="addComment" onClick={removeComment} />
+        </>
       ) : (
-        <MdOutlineAddCircle onClick={addComments} />
+        <MdOutlineAddCircle className="addComment" onClick={addComment} />
       )}
     </div>
   );

@@ -4,16 +4,8 @@ import Posts from "./Posts";
 import Rec_list from "../components/Rec_list";
 
 const Home = () => {
-  const [showCover, setShowCover] = useState(true);
-  const [isAll, setIsAll] = useState(true);
+  const [showCover, setShowCover] = useState(false);
 
-  const showAll = () => {
-    setIsAll(true);
-  };
-
-  const showMine = () => {
-    setIsAll(false);
-  };
   useEffect(() => {
     console.log("time");
     let wait = setTimeout(() => {
@@ -38,18 +30,8 @@ const Home = () => {
           </div>
         </div>
       ) : (
-        <div>
-          <div>
-            {/* {user.isAdmin ? null :<><h1>
-              <span onClick={showMine}>Mine</span>
-              <span onClick={showAll}> All</span>
-            </h1></>} */}
-            <h1>
-              <span onClick={showMine}>Mine</span>
-              <span onClick={showAll}> All</span>
-            </h1>
-          </div>
-          <Posts isAll={isAll} />
+        <div className="homeContent">
+          <Posts />
           !userId && <Rec_list />
         </div>
       )}

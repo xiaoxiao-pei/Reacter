@@ -18,7 +18,7 @@ const UserSchema = new mongoose.Schema({
   },
   userJoinTime: {
     type: Date,
-    required: true,
+    required: false,
   },
   userIsAdmin: {
     type: Boolean,

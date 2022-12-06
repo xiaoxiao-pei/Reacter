@@ -1,5 +1,5 @@
 // import { FcComments } from "react-icons/fc";
-
+import "../css/posts.css";
 import { TiDeleteOutline } from "react-icons/ti";
 import React, { useState, useRef, useEffect } from "react";
 
@@ -34,35 +34,29 @@ function CommentItem({ sc }) {
   return (
     <>
       {!disap && (
-        <div className="postCard">
-          <div className="postCardLeft">
-            <div className="postHead">
-              <div className="postHeadLeft">
-                <img src={owner.userPhoto} alt="avatar" />
-                <span>{owner.userName}</span>
-                <span></span>
-              </div>
-              <div className="postHeadRight">
-                <div className="postDate">
-                  <span>{sc.commentTime}</span>
-                </div>
-              </div>
+        <div className="commentItem">
+          <div className="commentHead">
+            <div className="commentHeadLeft">
+              <img src={owner.userPhoto} alt="avatar" />
+              <span>{owner.userName}</span>
+              <span></span>
             </div>
+            <div className="commentHeadRight">
+              <span>{sc.commentTime}</span>
+            </div>
+          </div>
 
-            <div className="postBody">
-              <textarea
-                value={sc.commentContent}
-                className="postBody"
-              ></textarea>
-            </div>
+          <div className="commentBody">
+            <span>{sc.commentContent}</span>
+          </div>
 
-            <div className="postFooter">
-              <div className="deleteIcon">
-                {sc.userId === userId && (
-                  <TiDeleteOutline onClick={() => deleteComment(sc._id)} />
-                )}
-              </div>
-            </div>
+          <div className="commentFooter">
+            {sc.userId === userId && (
+              <TiDeleteOutline
+                className="commentDelete"
+                onClick={() => deleteComment(sc._id)}
+              />
+            )}
           </div>
         </div>
       )}

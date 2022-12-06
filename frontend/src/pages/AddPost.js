@@ -17,6 +17,7 @@ export const AddPost = () => {
   const [newPost, setNewPost] = useState({});
   // const userId = localStorage.getItem("userId");
   const userId = "638ce1464c43b7b1ccbe7867";
+
   const handleSubmit = async (event) => {
     console.log("subit");
     event.preventDefault();
