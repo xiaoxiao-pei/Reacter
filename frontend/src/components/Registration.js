@@ -60,7 +60,7 @@ function RegistrationForm() {
         validate();
 
         if (usernameErr || passwordErr || rePasswordErr || emailErr) {
-            return
+            return;
         }
 
         fetch("http://localhost:3001/users/register",
@@ -83,7 +83,7 @@ function RegistrationForm() {
             .then((data) => data.json())
             .then((json) => {
                 alert(JSON.stringify(json) + ", Please login!");
-                navigate('/');
+                navigate('/login');
             });
 
     }

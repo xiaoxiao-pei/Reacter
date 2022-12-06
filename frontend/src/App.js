@@ -10,6 +10,7 @@ import Registration from './components/Registration';
 import ForgetPwd from './components/ForgetPwd';
 import ResetPwd from './components/ResetPwd';
 import UserProfile from './components/UserProfile';
+import UpdatePWD from './components/UpdatePWD';
 
 export const ReactContext = React.createContext({
 
@@ -41,8 +42,10 @@ function App() {
             <Route path="register" element={<Registration />} />
             <Route path="login" element={<Login />} />
             <Route path="login/forgetPWD" element={<ForgetPwd />} />
-            <Route path="login/resetPWD/:id/:token" element={<ResetPwd />} />
-            <Route path="user/profile" element={<UserProfile />} />
+            <Route path="user/:id/resetPWD" element={<ResetPwd />} />
+            <Route path="user/:id/profile" element={<UserProfile />} />
+            <Route path="user/:id/updatePWD" element={<UpdatePWD />} />
+            {/* <Route path="user/:id/updatePWD" element={<UpdatePWD />} /> */}
             <Route path="*" element={<p>Invalid URL</p>} />
           </Route>
         </Routes>

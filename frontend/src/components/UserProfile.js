@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-//import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import '../css/App.css'
 import Button from '@mui/material/Button';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { ReactContext } from "../App";
-import { AiFillEdit } from "react-icons/ai";
+import { AiFillEdit, AiOutlineCheck } from "react-icons/ai";
 
 const theme = createTheme({
     palette: {
@@ -18,25 +18,31 @@ const theme = createTheme({
 function UserProfile() {
     const [isAdminLoggedIn, setIsAdminLoggedIn, isUserLoggedIn, setIsUserLoggedIn] = React.useContext(ReactContext);
 
+    const navigate = useNavigate();
+
     const [user, setUser] = useState("");
 
     const [motto, setMotto] = useState();
+    const [isActive, setIsActive] = useState(true);
+    const [isMottoUpdated, setIsMottoUpdated] = useState(false);
+    const [isStatuesUpdated, setIsStatuesUpdated] = useState(false);
 
-    let userName = localStorage.getItem("userName");
+    let userID = useParams().id;
 
     useEffect(() => {
 
-        fetch("http://localhost:3001/user?_id=" + localStorage.getItem("userID"), { method: "GET" })
+        fetch("http://localhost:3001/user/" + userID, { method: "GET" })
             .then((data) => data.json())
-            .then((json) => {setUser(json); setMotto(user.userMotto)})
+            .then((json) => setUser(json))
+            .then(setMotto(user.userMotto))
             .catch((error) => console.log(error))
     }, []);
 
-    //handle form submission
+    //handle update motto
     const updateMotto = (e) => {
         e.preventDefault();
 
-        fetch("http://localhost:3001/users/" + localStorage.getItem("userID") + "/motto",
+        fetch("http://localhost:3001/users/" + userID + "/motto",
             {
                 method: "PATCH",
 
@@ -49,8 +55,30 @@ function UserProfile() {
 
             })
             .then((data) => data.json())
+            .then(setIsMottoUpdated(true))
 
     }
+
+    //handle update status
+    const updateStatus = (e) => {
+        e.preventDefault();
+
+        fetch("http://localhost:3001/users/" + userID + "/status",
+            {
+                method: "PATCH",
+
+                body: JSON.stringify({
+                    userIsActive: isActive,
+                }),
+                headers: {
+                    "Content-type": "application/json;charset=UTF-8",
+                },
+
+            })
+            .then((data) => data.json())
+            .then(setIsStatuesUpdated(true))
+    }
+
 
     return (user &&
         <div className='row'>
@@ -59,7 +87,7 @@ function UserProfile() {
 
                     <div>
                         {isUserLoggedIn && <h3 className='formTitle py-3'>Your profile</h3>}
-                        {isAdminLoggedIn && <h3 className='formTitle py-3'>Profile of {userName}</h3>}
+                        {isAdminLoggedIn && <h3 className='formTitle py-3'>Profile of {user.userName}</h3>}
                     </div>
 
                     <div className="row px-3">
@@ -83,15 +111,57 @@ function UserProfile() {
 
                             <div className='row  my-3'>
                                 <div className='col-4 mt-3'><label className='d-flex justify-content-end'> Motto:</label></div>
-                                <input className="col-6 form__input" type="text" value={motto} onChange={(event) => setMotto(event.target.value)} />
+                                <input className="col-6 form__input" type="text" placeholder={user.userMotto} value={motto} onChange={(event) => setMotto(event.target.value)} />
                                 <button className='col-2 mt-3 mx-0 iconBtn' onClick={updateMotto}>
-                                    <AiFillEdit className='form_icon' />
+                                    {isMottoUpdated ?
+                                        <AiOutlineCheck className='form_icon' />
+                                        : <AiFillEdit className='form_icon' />
+                                    }
+
                                 </button>
                             </div>
 
                             <div className='row my-3'>
                                 <div className='col-4 mt-3'><label className='d-flex justify-content-end'> Status:</label></div>
-                                <input className="col-6 form__input" type="text" value={user.userIsActive ? "active" : "banned"} readOnly={true} />
+
+                                {isAdminLoggedIn &&
+                                    <>
+                                        <div className='col-6'>
+                                            <div className=" radio ">
+                                                <label>
+                                                    <input
+                                                        type="radio"
+                                                        value="active"
+                                                        checked={isActive}
+                                                        onClick={() => setIsActive(true)}
+                                                    />
+                                                    Active
+                                                </label>
+                                            </div>
+                                            <div className=" radio ">
+                                                <label>
+                                                    <input
+                                                        type="radio"
+                                                        value="banned"
+                                                        checked={!isActive}
+                                                        onClick={() => setIsActive(false)}
+                                                    />
+                                                    Banned
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <button className='col-2 mt-3 mx-0 iconBtn' onClick={updateStatus}>
+                                            {isStatuesUpdated ?
+                                                <AiOutlineCheck className='form_icon' />
+                                                : <AiFillEdit className='form_icon' />
+                                            }
+                                        </button>
+                                    </>
+                                }
+
+                                {isUserLoggedIn &&
+                                    <input className="col-6 form__input" type="text" value={user.userIsActive ? "Active" : "Banned"} readOnly={true} />
+                                }
                             </div>
 
                             <div className='row my-3'>
@@ -104,11 +174,15 @@ function UserProfile() {
                                 <input className="col-6 form__input" type="text" value={user.userJoinTime.substring(0, 10)} readOnly={true} />
                             </div>
 
-                            <div className='row my-3'>
-                                <ThemeProvider theme={theme}>
-                                    <Button className='col-10' variant="contained" type="submit" >Reset Password</Button>
-                                </ThemeProvider>
-                            </div>
+                            {isUserLoggedIn &&
+                                <div className='row my-3'>
+                                    <ThemeProvider theme={theme}>
+                                        <Button className='col-10' variant="contained"
+                                            onClick={() => navigate("/user/" + userID + "/updatePWD")} >Reset Password</Button>
+                                    </ThemeProvider>
+                                </div>
+                            }
+
 
                         </div>
 

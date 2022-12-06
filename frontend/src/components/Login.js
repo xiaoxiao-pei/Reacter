@@ -24,6 +24,7 @@ function LoginForm() {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [loginSuccess, setLoginSuccess] = useState(true);
 
     const handleSubmit = (event) => {
         event.preventDefault(); // prevent page reload
@@ -40,16 +41,21 @@ function LoginForm() {
         })
             .then((data) => data.json())
             .then((json) => { //after login, store userName and userId to localStorage, set isAdminLoggedIn or isUserLoggedIn true
-                alert(JSON.stringify(json));
-                localStorage.setItem("userName", json.userName);
-                localStorage.setItem("userID", json.userID);
-                if (json.isAdmin){
-                    setIsAdminLoggedIn(true); 
-                    navigate('/');
-                } else{
-                    setIsUserLoggedIn(true);
-                    navigate('/');
-                } 
+                if (json.success) {
+                    localStorage.setItem("userName", json.userName);
+                    localStorage.setItem("userID", json.userID);
+                    if (json.isAdmin) {
+                        console.log(json.userName);
+                        setIsAdminLoggedIn(true);
+                        navigate('/');
+                    } else {
+                        setIsUserLoggedIn(true);
+                        navigate('/');
+                    }
+                }else{
+                    setLoginSuccess(false);
+                }
+
             });
     }
     return (
@@ -59,6 +65,7 @@ function LoginForm() {
                     <div>
                         <h3 className='formTitle py-3'>Please Log In</h3>
                     </div>
+                    {!loginSuccess && <p style={{color:"red"}}>Login failed, try again</p>}
                     <div >
                         <FaEnvelope className='form_icon' />
                         <input className="form__input mb-3" type="text" placeholder="Email" value={email} onChange={(event) => setEmail(event.target.value)} />
@@ -67,7 +74,7 @@ function LoginForm() {
                         <FaLock className='form_icon' />
                         <input className="form__input mb-3" type="password" placeholder="Password" value={password} onChange={(event) => setPassword(event.target.value)} />
                     </div>
-                    
+
                     <div className='d-flex justify-content-end mx-5'>
                         <a className='mx-5' href='/login/forgetPWD'>Forget Password?</a>
                     </div>

@@ -15,6 +15,7 @@ function Header() {
     const navigate = useNavigate();
     const [isAdminLoggedIn, setIsAdminLoggedIn, isUserLoggedIn, setIsUserLoggedIn] = React.useContext(ReactContext);
 
+
     return (
         <div >
             <Navbar collapseOnSelect expand="md" bg="dark" variant="dark">
@@ -35,7 +36,7 @@ function Header() {
                         </Nav>
 
                         {isUserLoggedIn && 
-                            <button onClick={() => { navigate("/user/profile") }}>Profile</button>
+                            <button onClick={() => { navigate("/user/" + localStorage.getItem('userID') + "/profile") }}>Profile</button>
                         }
 
 
@@ -54,6 +55,8 @@ function Header() {
                                     setIsAdminLoggedIn(false);
                                     setIsUserLoggedIn(false);
                                     localStorage.clear("userName");
+                                    localStorage.clear("userID");
+                                    navigate("/")
                                 }} >
                                 logout</button>}
                                 

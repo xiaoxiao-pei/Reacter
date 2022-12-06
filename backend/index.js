@@ -49,11 +49,7 @@ app.post("/users/register", async (request, response) => {
     const userPassword = request.body.userPassword;
     const userMotto = request.body.userMotto;
     try {
-        if (
-            userName && validator.isAlphanumeric(userName) &&
-            userPassword && validator.isStrongPassword(userPassword)
-        ) {
-            console.log(userName);
+        if (userName && validator.isAlphanumeric(userName) && userPassword) {
             // Check to see if the user already exists. If not, then create it.
             const user = await userModel.findOne({ userName: userName });
             const email = await userModel.findOne({ userEmail: userEmail });
@@ -77,7 +73,7 @@ app.post("/users/register", async (request, response) => {
                     userMotto: userMotto,
                     userJoinTime: new Date(),
                     userIsAdmin: false,
-                    userPostCount:0,
+                    userPostCount: 0,
                     userIsActive: true,
                 };
                 await userModel.create(userToSave);
@@ -121,7 +117,7 @@ app.post("/users/login", async (request, response) => {
     response.send({ success: false });
 });
 
-
+var code = '';
 //forget password
 app.post("/forgotPassword", async (request, response) => {
     const email = request.body.email;
@@ -131,9 +127,17 @@ app.post("/forgotPassword", async (request, response) => {
             return res.json({ status: "User Not Exists!!" });
         }
 
+        var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        var charactersLength = characters.length;
+        code ='';
+        for (var i = 0; i < 6; i++) {
+            code += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+
         const secret = JASONWEBTOKEN_SECRET + user.password;
         const token = jsonWebToken.sign({ email: user.userEmail, id: user._id }, secret, { expiresIn: "5m", });
         const link = `http://localhost:3001/reset-password/${user._id}/${token}`;//link sent to email
+        const emailContent = link + "\n\n\n Recovery Code:" + code;
 
         var transporter = nodemailer.createTransport({
             service: "gmail",
@@ -149,9 +153,9 @@ app.post("/forgotPassword", async (request, response) => {
 
         var mailOptions = {
             from: "reacter2022@gmail.com",
-            to: "pxtoday@hotmail.com",
+            to: email,
             subject: "Password Reset",
-            text: link,
+            text: emailContent,
         };
 
         transporter.sendMail(mailOptions, function (error, info) {
@@ -159,7 +163,7 @@ app.post("/forgotPassword", async (request, response) => {
                 console.log(error);
             } else {
                 console.log("Email sent successfully ");
-                response.send({ success: true });
+                response.send({ success: true, "userID": user._id });
             }
         });
         return;
@@ -182,13 +186,30 @@ app.get("/reset-password/:id/:token", async (request, response) => {
     try {
         const verify = jsonWebToken.verify(token, secret);
         response.render("index", { email: verify.email, status: "Not Verified" });
-        response.send({ 
+        response.send({
             success: true,
             "email": verify.email,
         });
     } catch (error) {
         console.log(error);
         response.send("Not Verified");
+    }
+});
+
+
+// check code to recovery password
+app.post("/forgotPassword/verifyCode", async (request, response) => {
+
+    const useCode = request.body.code;
+
+    console.log(useCode);
+    console.log(code);
+    if (useCode === code) {
+        response.send({ success: true });
+        return
+    }else{
+        response.send({ success: false});
+        return
     }
 });
 
@@ -222,8 +243,8 @@ app.post("/reset-password/:id/:token", async (req, res) => {
 });
 
 /* An API get request using query parameters to /users?_id=XXX */
-app.get("/user", async (req, res) => {
-    const userID = req.query._id;
+app.get("/user/:userid", async (req, res) => {
+    const userID = req.params.userid;
     try {
         const user = await userModel.findOne({ _id: userID });
         res.send(user);
@@ -233,8 +254,8 @@ app.get("/user", async (req, res) => {
 });
 
 /* update Motto */
-app.patch("/users/:useid/motto", async (req, res) => {
-    const userID = req.params.useid;
+app.patch("/users/:userid/motto", async (req, res) => {
+    const userID = req.params.userid;
     const motto = req.body.userMotto;
     try {
         const results = await userModel.updateOne({
@@ -246,6 +267,70 @@ app.patch("/users/:useid/motto", async (req, res) => {
     } catch (err) {
         console.log(err);
     }
+});
+
+/* update status */
+app.patch("/users/:userid/status", async (req, res) => {
+    const userID = req.params.userid;
+    const userIsActive = req.body.userIsActive;
+    try {
+        const results = await userModel.updateOne({
+            _id: userID
+        }, { userIsActive: userIsActive });
+        console.log("matched: " + results.matchedCount);
+        console.log("modified: " + results.modifiedCount);
+        res.send(results);
+    } catch (err) {
+        console.log(err);
+    }
+});
+
+/* check old Password */
+app.post("/users/:userid/oldPassword", async (request, response) => {
+    const userID = request.params.userid;
+    const password = request.body.userPassword;
+    try {
+        if (password) {
+            // Check to see if the user already exists. If not, then create it.
+            const user = await userModel.findOne({ _id: userID });
+            if (!user) {
+                console.log("User not found ");
+                response.send({ success: false });
+                return;
+            } else {
+                const isSame = await bcrypt.compare(password, user.userPassword);
+                if (isSame) {
+                    console.log("Successful login");
+                    response.send({ // return userID, userName, isAdmin in Json format
+                        success: true,
+                    });
+                    return;
+                }
+            }
+        }
+    } catch (error) {
+        console.log(error.message);
+    }
+    response.send({ success: false });
+});
+
+/* reset password */
+app.patch("/users/:userid/resetPassword", async (req, res) => {
+    const userID = req.params.userid;
+    const userPassword = req.body.userPassword;
+    hashedPassword = await bcrypt.hash(userPassword, saltRounds);
+    try {
+        const results = await userModel.updateOne({
+            _id: userID
+        }, { userPassword: hashedPassword });
+        console.log("matched: " + results.matchedCount);
+        console.log("modified: " + results.modifiedCount);
+        res.send({ success: true });
+        return
+    } catch (err) {
+        console.log(err);
+    }
+    res.send({ success: false });
 });
 
 
