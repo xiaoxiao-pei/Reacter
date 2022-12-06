@@ -20,7 +20,7 @@ function UserProfile() {
 
     const navigate = useNavigate();
 
-    const [user, setUser] = useState("");
+    const [user, setUser] = useState();
 
     const [motto, setMotto] = useState();
     const [isActive, setIsActive] = useState(true);
@@ -34,7 +34,7 @@ function UserProfile() {
         fetch("http://localhost:3001/user/" + userID, { method: "GET" })
             .then((data) => data.json())
             .then((json) => setUser(json))
-            .then(setMotto(user.userMotto))
+            //.then(() => setMotto(user.userMotto))
             .catch((error) => console.log(error))
     }, []);
 
@@ -86,8 +86,8 @@ function UserProfile() {
                 <div className="form-body">
 
                     <div>
-                        {isUserLoggedIn && <h3 className='formTitle py-3'>Your profile</h3>}
-                        {isAdminLoggedIn && <h3 className='formTitle py-3'>Profile of {user.userName}</h3>}
+                        {!user.userIsAdmin && <h3 className='formTitle py-3'>Your profile</h3>}
+                        {user.userIsAdmin && <h3 className='formTitle py-3'>Profile of {user.userName}</h3>}
                     </div>
 
                     <div className="row px-3">
@@ -124,7 +124,7 @@ function UserProfile() {
                             <div className='row my-3'>
                                 <div className='col-4 mt-3'><label className='d-flex justify-content-end'> Status:</label></div>
 
-                                {isAdminLoggedIn &&
+                                {user.userIsAdmin &&
                                     <>
                                         <div className='col-6'>
                                             <div className=" radio ">
@@ -159,7 +159,7 @@ function UserProfile() {
                                     </>
                                 }
 
-                                {isUserLoggedIn &&
+                                {!user.userIsAdmin &&
                                     <input className="col-6 form__input" type="text" value={user.userIsActive ? "Active" : "Banned"} readOnly={true} />
                                 }
                             </div>
@@ -174,7 +174,7 @@ function UserProfile() {
                                 <input className="col-6 form__input" type="text" value={user.userJoinTime.substring(0, 10)} readOnly={true} />
                             </div>
 
-                            {isUserLoggedIn &&
+                            {!user.userIsAdmin &&
                                 <div className='row my-3'>
                                     <ThemeProvider theme={theme}>
                                         <Button className='col-10' variant="contained"
@@ -182,7 +182,6 @@ function UserProfile() {
                                     </ThemeProvider>
                                 </div>
                             }
-
 
                         </div>
 

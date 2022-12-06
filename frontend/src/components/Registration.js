@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../css/App.css'
-import { FaUserAlt, FaEnvelope, FaLock } from "react-icons/fa"; //icons from react icon font awesome
+import { FaUserAlt, FaEnvelope, FaLock, FaFileUpload } from "react-icons/fa"; //icons from react icon font awesome
 import Button from '@mui/material/Button';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import axios from "axios";
 
 const theme = createTheme({
     palette: {
@@ -20,6 +21,7 @@ function RegistrationForm() {
     const [rePassword, setRePassword] = useState("");
     const [email, setEmail] = useState("");
     const [motto, setMotto] = useState("");
+    const [photo, setPhoto] = useState();
 
     const [usernameErr, setUsernameErr] = useState(false);
     const [passwordErr, setPasswordErr] = useState(false);
@@ -30,7 +32,7 @@ function RegistrationForm() {
     const validate = () => {
 
         const validUsername = new RegExp('^[a-zA-Z0-9]{3,10}$')
-        if (!validUsername.test(username)){
+        if (!validUsername.test(username)) {
             console.log("username wrong");
             setUsernameErr(true);
         }
@@ -47,7 +49,7 @@ function RegistrationForm() {
         }
 
         //validation for email
-        const validEmail = new RegExp('^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$' );
+        const validEmail = new RegExp('^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$');
         if (!validEmail.test(email)) {
             setEmailErr(true);
         }
@@ -63,28 +65,38 @@ function RegistrationForm() {
             return;
         }
 
-        fetch("http://localhost:3001/users/register",
-            {
-                method: "POST",
+        const formData = new FormData();
+        formData.append('userName', username);
+        formData.append('userEmail', email);
+        formData.append('userPassword', password);
+        formData.append('userMotto',motto);
+        formData.append('photo', photo);
 
-                body: JSON.stringify({
-                    userName: username,
-                    userEmail: email,
-                    userPassword: password,
-                    rePassword: rePassword,
-                    userMotto: motto,
+        for (var pair of formData.entries()) {
+            console.log(pair[0] + " - " + pair[1]);
+        }
 
-                }),
-                headers: {
-                    "Content-type": "application/json;charset=UTF-8",
-                },
-
+        axios
+            .post("http://localhost:3001/users/register", formData)
+            .then((res) => {
+                console.log(res);
             })
-            .then((data) => data.json())
-            .then((json) => {
-                alert(JSON.stringify(json) + ", Please login!");
-                navigate('/login');
+            .catch((err) => {
+                console.log(err);
             });
+
+        // fetch("http://localhost:3001/users/register",
+        //     {
+        //         method: "POST",
+
+        //         body: formData
+
+        //     })
+        //     .then((data) => data.json())
+        //     .then((json) => {
+        //         alert(JSON.stringify(json) + ", Please login!");
+        //         navigate('/login');
+        //     });
 
     }
 
@@ -97,8 +109,37 @@ function RegistrationForm() {
                     </div>
                     <div >
                         <FaUserAlt className='form_icon' />
-                        <input className="form__input" type="text" placeholder="Username" value={username} onChange={(event) => setUsername(event.target.value)} />
-                        <p className='inputErr'> {usernameErr? '* Username must have 3-10 characters':''} </p>
+                        <input
+                            className="form__input"
+                            type="text"
+                            placeholder="Username"
+                            value={username}
+                            onChange={(event) => setUsername(event.target.value)}
+                        />
+                        <p className='inputErr'> {usernameErr ? '* Username must have 3-10 characters' : ''} </p>
+                    </div>
+
+                    <div>
+                        < FaFileUpload className='form_icon' />
+
+                        {/* <ThemeProvider theme={theme}>
+                            <Button
+                                variant="contained"
+                                onClick={() => document.getElementById('userPhoto').click()} >
+                                Upload your photo</Button>
+                        </ThemeProvider> */}
+
+
+                        <input
+                            name="userPhoto"
+                            className="form__input mb-3"
+                            id="userPhoto"
+                            onChange={(e) => setPhoto(e.target.files[0])}
+                            type="file"
+                            accept="image/gif,image/jpeg,image/jpg,image/png"
+                            multiple
+                            // style={{ display: 'none' }}
+                        />
                     </div>
 
                     <div >
@@ -116,7 +157,7 @@ function RegistrationForm() {
                     <div >
                         <FaLock className='form_icon' />
                         <input className="form__input" type="password" placeholder="Retype Password" value={rePassword} onChange={(event) => setRePassword(event.target.value)} />
-                        <p className='inputErr'> {rePasswordErr ? "* Password doesn't match": ''} </p>
+                        <p className='inputErr'> {rePasswordErr ? "* Password doesn't match" : ''} </p>
 
                     </div>
 

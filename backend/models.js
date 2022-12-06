@@ -7,8 +7,7 @@ const UserSchema = new mongoose.Schema({
     },
     userPhoto:
     {
-        data: Buffer,
-        contentType: String,
+        type: String,
         required: false,
     },
     userEmail: {

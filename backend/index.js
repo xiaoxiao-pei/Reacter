@@ -6,12 +6,44 @@ const validator = require('validator');
 const bcrypt = require('bcrypt');
 const saltRounds = 10
 
+const multer = require("multer");
+const fs = require("fs");
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors'); //cross-orign resource sharing
 const app = express();
 const port = 3001; // Must be different than the port of the React app
 app.use(cors()); // https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
+
+//define the multer storage for pictures
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        // define folder to store upload pictures
+        cb(null, "photos");
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.fieldname + "-" + Date.now() + ".jpg");
+    },
+});
+
+//define allowed pictures types
+const fileFilter = (req, file, cb) => {
+    const allowedFileTypes = ["image/jpeg", "image/jpg", "image/png"];
+    if (allowedFileTypes.includes(file.mimetype)) {
+        cb(null, true);
+    } else {
+        cb(null, true);
+    }
+};
+
+let upload = multer({
+    storage,
+    fileFilter,
+});
+
+
+
 
 //foget password token
 const jsonWebToken = require("jsonwebtoken");
@@ -42,12 +74,19 @@ app.use(bodyParser.json());
 
 
 /* User Registration*/
-app.post("/users/register", async (request, response) => {
+app.post("/users/register", upload.single("photo"), async (request, response) => {
     const id = request.body.id;
     const userName = request.body.userName;
+    console.log(userName);
     const userEmail = request.body.userEmail;
+    console.log(userEmail);
+    console.log(request.file);
+    console.log(request.body);
     const userPassword = request.body.userPassword;
     const userMotto = request.body.userMotto;
+    console.log(userMotto);
+    const userPhoto = request.file.filename;
+
     try {
         if (userName && validator.isAlphanumeric(userName) && userPassword) {
             // Check to see if the user already exists. If not, then create it.
@@ -75,6 +114,7 @@ app.post("/users/register", async (request, response) => {
                     userIsAdmin: false,
                     userPostCount: 0,
                     userIsActive: true,
+                    userPhoto: userPhoto,
                 };
                 await userModel.create(userToSave);
                 response.send({ success: true });
@@ -103,9 +143,7 @@ app.post("/users/login", async (request, response) => {
                     console.log("Successful login");
                     response.send({ // return userID, userName, isAdmin in Json format
                         success: true,
-                        "userID": user._id,
-                        "userName": user.userName,
-                        isAdmin: user.userIsAdmin
+                        "user": user
                     });
                     return;
                 }
@@ -201,9 +239,6 @@ app.get("/reset-password/:id/:token", async (request, response) => {
 app.post("/forgotPassword/verifyCode", async (request, response) => {
 
     const useCode = request.body.code;
-
-    console.log(useCode);
-    console.log(code);
     if (useCode === code) {
         response.send({ success: true });
         return

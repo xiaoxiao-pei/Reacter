@@ -1,5 +1,5 @@
 import '../css/App.css';
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaEnvelope, FaLock } from "react-icons/fa";
 import Button from '@mui/material/Button';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -26,6 +26,8 @@ function LoginForm() {
     const [password, setPassword] = useState("");
     const [loginSuccess, setLoginSuccess] = useState(true);
 
+    
+
     const handleSubmit = (event) => {
         event.preventDefault(); // prevent page reload
         fetch("http://localhost:3001/users/login", {
@@ -42,20 +44,18 @@ function LoginForm() {
             .then((data) => data.json())
             .then((json) => { //after login, store userName and userId to localStorage, set isAdminLoggedIn or isUserLoggedIn true
                 if (json.success) {
-                    localStorage.setItem("userName", json.userName);
-                    localStorage.setItem("userID", json.userID);
-                    if (json.isAdmin) {
-                        console.log(json.userName);
+                    setLoginSuccess(true);
+                    let user = json.user;
+                    localStorage.setItem("user", JSON.stringify(user));
+                    if (user.userIsAdmin) {
                         setIsAdminLoggedIn(true);
-                        navigate('/');
                     } else {
-                        setIsUserLoggedIn(true);
-                        navigate('/');
+                        setIsUserLoggedIn(true);                     
                     }
+                    navigate('/user/' + user._id + '/profile');
                 }else{
                     setLoginSuccess(false);
                 }
-
             });
     }
     return (

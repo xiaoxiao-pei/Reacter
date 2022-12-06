@@ -56,8 +56,6 @@ function ForgetPwd() {
 
         event.preventDefault();
 
-        console.log("code" + userID);
-
         fetch("http://localhost:3001/forgotPassword/verifyCode", {
             method: "POST",
             body: JSON.stringify({
@@ -72,7 +70,9 @@ function ForgetPwd() {
             .then((json) => {
                 console.log(json);
                 if(json.success){
-                    navigate("/user/" + localStorage.getItem("userID") + "/resetPWD") 
+                    let userID = localStorage.getItem("userID");
+                    localStorage.clear("userID");
+                    navigate("/user/" + userID + "/resetPWD") 
                 }else{
                     console.log("Code wrong.");
                     localStorage.clear("userID");

@@ -23,6 +23,8 @@ function ResetPwd() {
 
     let userID = useParams().id;
 
+    const [isReset, setIsReset] = useState(false);
+
     const [password, setPassword] = useState();
     const [rePassword, setRePassword] = useState();
     const [passwordErr, setPasswordErr] = useState(false);
@@ -54,7 +56,6 @@ function ResetPwd() {
 
         validate();
 
-
         fetch("http://localhost:3001/users/" + userID + "/resetPassword",
             {
                 method: "PATCH",
@@ -70,7 +71,7 @@ function ResetPwd() {
             .then((data) => data.json())
             .then((json) => {
                 if (json.success) {
-                    navigate("/user/" + userID + "/profile")
+                    setIsReset(true);
                 } else {
                     alert("failed, please reset again.")
                 }
@@ -78,29 +79,44 @@ function ResetPwd() {
     }
 
     return (
-        <div className='row'>
-            <form className="reactForm col-8 col-md-6 col-lg-5 col-xl-4 text-center px-0" onSubmit={handleSubmit}>
-                <div className="form-body">
+        < div className='row' >
+            {isReset &&
+                <div className="reactForm col-8 col-md-6 col-lg-5 col-xl-4 text-center px-0" >
                     <div>
-                        <h3 className='formTitle py-3'>Reset Password</h3>
-                    </div>
-                    <div >
-                        <FaLock className='form_icon' />
-                        <input className="form__input mb-3" type="password" placeholder="Password" value={password} onChange={(event) => { setPassword(event.target.value) }} />
-                        <p className='inputErr'> {passwordErr ? '* Password must have at least one letter, at least one number, and at least 6 characters' : ''} </p>
-                    </div>
-                    <div >
-                        <FaLock className='form_icon' />
-                        <input className="form__input mb-3" type="password" placeholder="Retype Password" value={rePassword} onChange={(event) => { setRePassword(event.target.value) }} />
-                        <p className='inputErr'> {rePasswordErr ? "* Password doesn't match" : ''} </p>
+                        <h3 className='formTitle py-3'>Confirmed! Please log in</h3>
                     </div>
                     <div className='form_button mb-4'>
                         <ThemeProvider theme={theme}>
-                            <Button variant="contained" type="submit" >Confirm</Button>
+                             <Button variant="contained" onClick={() =>navigate('/login')} >login</Button>
                         </ThemeProvider>
                     </div>
                 </div>
-            </form>
+            }
+
+            {!isReset &&
+                <form className="reactForm col-8 col-md-6 col-lg-5 col-xl-4 text-center px-0" onSubmit={handleSubmit}>
+                    <div className="form-body">
+                        <div>
+                            <h3 className='formTitle py-3'>Reset Password</h3>
+                        </div>
+                        <div >
+                            <FaLock className='form_icon' />
+                            <input className="form__input mb-3" type="password" placeholder="Password" value={password} onChange={(event) => { setPassword(event.target.value) }} />
+                            <p className='inputErr'> {passwordErr ? '* Password must have at least one letter, at least one number, and at least 6 characters' : ''} </p>
+                        </div>
+                        <div >
+                            <FaLock className='form_icon' />
+                            <input className="form__input mb-3" type="password" placeholder="Retype Password" value={rePassword} onChange={(event) => { setRePassword(event.target.value) }} />
+                            <p className='inputErr'> {rePasswordErr ? "* Password doesn't match" : ''} </p>
+                        </div>
+                        <div className='form_button mb-4'>
+                            <ThemeProvider theme={theme}>
+                                <Button variant="contained" type="submit" >Confirm</Button>
+                            </ThemeProvider>
+                        </div>
+                    </div>
+                </form>
+            }
         </div>
     )
 
