@@ -11,12 +11,12 @@
   width: 75%;
   font-size: 22px;
   border-radius: 55px;
-  background-color: aquamarine;
+  background-color: #c2dcb1;
   padding: 1rem;
   margin: 1% auto;
 }
 .recListHead {
-  background-color: aquamarine;
+  background-color: #c2dcb1;
   text-align: center;
   padding: 0.5rem 0;
   margin-bottom: 0.5rem;
@@ -54,7 +54,7 @@
   margin: 0.5rem 0;
 }
 .postIcon {
-  background-color: aquamarine;
+  background-color: #c2dcb1;
   margin-right: 0.5rem;
 }
 

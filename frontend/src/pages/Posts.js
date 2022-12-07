@@ -9,6 +9,7 @@ function Posts() {
   const [isAll, setIsAll] = useState(true);
 
   // const user = localStorage.getItem("user");
+
   const userId = "638b879d586eb1728419bb01";
   const paraId = useParams("userId");
   useEffect(() => {
@@ -16,23 +17,27 @@ function Posts() {
     // to change
     let userType = false;
     let id;
-    // if (!user || (isAll === true && user.isAdmin === false))
+    // if (!user || (isAll === true && user.isAdmin === false) || (paraId === undefined && user.isAdmin === true))
     if (isAll === true && userType === false) {
       fetch("http://localhost:3001/posts", {
         method: "GET",
       })
         .then((data) => data.json())
         .then((data) => {
+          // if (user === undefined){
+          if (userId === undefined) {
+            data = data.slice(-5);
+          }
           setPostList([...data]);
           // data.map((d) => {
           //   setPostList((postList) => [...postList, d]);
           // });
         });
     } else {
-      // if (user.isAdmin) {
+      // if (user.isAdmin === false && isAll === false) {
       if (userType === false) {
         id = paraId;
-      } else if (!isAll) {
+      } else {
         // id = user._id
         id = userId;
       }
@@ -43,8 +48,7 @@ function Posts() {
       .then((data) => data.json())
       .then((data) => {
         data.map((d) => {
-          setPostList((postList) => [...postList, d]);
-          setPostList([]);
+          setPostList([...postList, d]);
         });
       });
     return () => setPostList([]);
@@ -70,9 +74,14 @@ function Posts() {
               <span onClick={showMine}>Mine</span>
               <span onClick={showAll}> All</span>
             </h1></>} */}
-        <h1>
-          <span onClick={showMine}>Mine</span>
-          <span onClick={showAll}> All</span>
+        <h1 style={{ textAlign: "center" }}>
+          <span className="postPartDis" onClick={showMine}>
+            Mine
+          </span>
+          <span style={{ color: "orange", fontSize: "3rem" }}>/</span>
+          <span className="postPartDis" onClick={showAll}>
+            All
+          </span>
         </h1>
       </div>
       {/* Title */}

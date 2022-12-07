@@ -1,6 +1,6 @@
 .post {
   position: relative;
-  background-color: aquamarine;
+  background-color: #c2dcb1;
   border-radius: 10px 10px 0 0;
   padding: 0.5rem;
   margin-bottom: 0.5rem;
@@ -11,7 +11,7 @@
 .postCard {
   display: flex;
   justify-content: space-between;
-  width: 100%;
+  width: 500px;
 }
 
 .postHead {
@@ -47,7 +47,37 @@ textarea {
   width: 100%;
   padding-left: 1rem;
 }
+.postDeleteIcon {
+  color: red;
+}
+.postDeleteIcon:hover {
+  transform: scale(1.2);
+}
 
+.postEditDoneIcon {
+  transform: scale(1.2);
+}
+
+.postPartDis {
+  color: orange;
+  font-family: cursive;
+  font-size: 3rem;
+}
+.postPartDis:hover {
+  color: yellow;
+  font-size: 3.5rem;
+}
+
+.postEditIcon {
+  color: blue;
+}
+.postEditIcon:hover {
+  transform: scale(1.2);
+}
+
+.showCommentIcon:hover {
+  transform: scale(1.2);
+}
 /* .postBody {
   width: 100%;
   height: 100%;
@@ -71,7 +101,7 @@ textarea {
   flex-direction: column;
   width: 60%;
   margin-top: 5rem;
-  background-color: aquamarine;
+  background-color: #c2dcb1;
 }
 
 .addPostForm {
@@ -124,7 +154,11 @@ textarea {
 }
 
 .addComment {
+  color: rgb(255, 196, 0);
   position: absolute;
   bottom: -0.5rem;
   right: -0.5rem;
+}
+.addComment:hover {
+  transform: scale(1.5);
 }

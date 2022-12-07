@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Posts from "./Posts";
 import Rec_list from "../components/Rec_list";
 import "../css/home.css";
+import Icon from "../components/Icon";
 
 const Home = () => {
   const [showCover, setShowCover] = useState(false);
@@ -19,6 +20,7 @@ const Home = () => {
 
   return (
     <div className="home">
+      <Icon />
       {/* <Header />
       {showCover ? (
         

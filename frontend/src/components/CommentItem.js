@@ -37,7 +37,15 @@ function CommentItem({ sc }) {
         <div className="commentItem">
           <div className="commentHead">
             <div className="commentHeadLeft">
-              <img src={owner.userPhoto} alt="avatar" />
+              <div
+                className="authorImg"
+                style={{
+                  backgroundImage: `url(https://hccryde.syd.catholic.edu.au/wp-content/uploads/sites/148/2019/05/Person-icon.jpg)`,
+                  width: "20px",
+                  height: "20px",
+                  display: "inline-block",
+                }}
+              ></div>
               <span>{owner.userName}</span>
               <span></span>
             </div>

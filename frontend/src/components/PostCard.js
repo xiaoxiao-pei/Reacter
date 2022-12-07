@@ -1,4 +1,4 @@
-import { AiOutlineHeart } from "react-icons/ai";
+import { AiTwotoneHeart } from "react-icons/ai";
 // import { FcComments } from "react-icons/fc";
 import { AiFillEdit } from "react-icons/ai";
 import { RiDeleteBin5Line } from "react-icons/ri";
@@ -140,29 +140,45 @@ function PostCard({ p }) {
 
               <div className="postFooter">
                 <div className="likeIcon">
-                  <AiOutlineHeart
+                  <AiTwotoneHeart
                     style={{ color: ifLike && "red" }}
                     onClick={() => addLike(post._id)}
                   />
                   <span>{post.postLikes} </span>
                 </div>
 
-                <div className="commentIcon">
-                  <VscComment onClick={showComments} />
+                <div className="showCommentIcon">
+                  <VscComment
+                    className="showCommentIcon"
+                    style={{ color: ifShowComments && "orange" }}
+                    onClick={showComments}
+                  />
                 </div>
 
-                <div className="editIcon">
+                <div>
                   {post.userId === userId &&
                     (!ifShowEdit ? (
-                      <IoCheckmarkDoneCircle onClick={() => update(post._id)} />
+                      <IoCheckmarkDoneCircle
+                        className="postEditDoneIcon"
+                        style={{ color: "green" }}
+                        onClick={() => update(post._id)}
+                      />
                     ) : (
-                      <AiFillEdit onClick={edit} />
+                      <AiFillEdit
+                        className="postEditIcon"
+                        style={{ color: "blue" }}
+                        onClick={edit}
+                      />
                     ))}
                 </div>
 
                 <div className="deleteIcon">
-                  {post.userId === userId && (
-                    <RiDeleteBin5Line onClick={() => deletePost(post._id)} />
+                  {/* {(post.userId === userId || userId.userIsAdmin === true) && ( */}
+                  {(post.userId === userId || true) && (
+                    <RiDeleteBin5Line
+                      className="postDeleteIcon"
+                      onClick={() => deletePost(post._id)}
+                    />
                   )}
                 </div>
               </div>
@@ -170,7 +186,7 @@ function PostCard({ p }) {
             <div
               className="postCardPhoto"
               style={{
-                backgroundImage: `url(http://localhost:3001/getImg/${post.postPhoto})`,
+                backgroundImage: `url(https://cdn.pixabay.com/photo/2013/07/18/20/26/sea-164989__480.jpg)`,
                 backgroundRepeat: "no-repeat",
                 backgroundSize: "cover",
                 backgroundPosition: "center",
