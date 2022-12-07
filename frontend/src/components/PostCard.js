@@ -1,18 +1,18 @@
 import { AiTwotoneHeart } from "react-icons/ai";
-// import { FcComments } from "react-icons/fc";
+
 import { AiFillEdit } from "react-icons/ai";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { IoCheckmarkDoneCircle } from "react-icons/io5";
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Comments from "./Comments";
-// import { FaEdit } from "react-icons/fa";
+
 import { VscComment } from "react-icons/vsc";
 import "../css/posts.css";
 
 function PostCard({ p }) {
-  //   const userId = localStorage.getItem("userId");
-  const userId = "638ce1464c43b7b1ccbe7867";
+  const user = localStorage.getItem("user");
+
   const postContentRef = useRef();
   const navigate = useNavigate();
   const [ifShowComments, setShowComments] = useState(false);
@@ -35,7 +35,7 @@ function PostCard({ p }) {
   console.log(owner);
   const showComments = () => {
     // logged in user id
-    if (userId !== undefined) {
+    if (user) {
       ifShowComments ? setShowComments(false) : setShowComments(true);
     } else {
       navigate("/login");
@@ -96,8 +96,6 @@ function PostCard({ p }) {
   const edit = () => {
     setIfShowEdit(false);
   };
-  console.log(userId);
-  console.log(owner);
 
   return (
     <>
@@ -110,7 +108,7 @@ function PostCard({ p }) {
                   <div
                     className="authorImg"
                     style={{
-                      backgroundImage: `url(https://hccryde.syd.catholic.edu.au/wp-content/uploads/sites/148/2019/05/Person-icon.jpg)`,
+                      backgroundImage: `url(http://localhost:3001/getImg/${owner.userPhoto})`,
                       width: "30px",
                       height: "30px",
                     }}
@@ -127,15 +125,16 @@ function PostCard({ p }) {
               </div>
 
               <div className="postBody">
-                {post.userId === userId && !ifShowEdit ? (
-                  <textarea
-                    defaultValue={post.postContent}
-                    ref={postContentRef}
-                    className="postBody"
-                  ></textarea>
-                ) : (
-                  <span>{post.postContent}</span>
-                )}
+                {user &&
+                  (post.userId === user._id && !ifShowEdit ? (
+                    <textarea
+                      defaultValue={post.postContent}
+                      ref={postContentRef}
+                      className="postBody"
+                    ></textarea>
+                  ) : (
+                    <span>{post.postContent}</span>
+                  ))}
               </div>
 
               <div className="postFooter">
@@ -156,7 +155,8 @@ function PostCard({ p }) {
                 </div>
 
                 <div>
-                  {post.userId === userId &&
+                  {user &&
+                    post.userId === user._id &&
                     (!ifShowEdit ? (
                       <IoCheckmarkDoneCircle
                         className="postEditDoneIcon"
@@ -173,8 +173,7 @@ function PostCard({ p }) {
                 </div>
 
                 <div className="deleteIcon">
-                  {/* {(post.userId === userId || userId.userIsAdmin === true) && ( */}
-                  {(post.userId === userId || true) && (
+                  {user && (post.userId === user._id || user.userIsAdmin) && (
                     <RiDeleteBin5Line
                       className="postDeleteIcon"
                       onClick={() => deletePost(post._id)}
@@ -186,7 +185,7 @@ function PostCard({ p }) {
             <div
               className="postCardPhoto"
               style={{
-                backgroundImage: `url(https://cdn.pixabay.com/photo/2013/07/18/20/26/sea-164989__480.jpg)`,
+                backgroundImage: `url(http://localhost:3001/getImg/${owner.userPhoto})`,
                 backgroundRepeat: "no-repeat",
                 backgroundSize: "cover",
                 backgroundPosition: "center",

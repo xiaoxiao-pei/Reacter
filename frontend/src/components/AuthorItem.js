@@ -14,7 +14,7 @@ function AuthorItem({ author, changeAuthorList }) {
         <div
           className="authorPhoto"
           style={{
-            backgroundImage: `url(https://hccryde.syd.catholic.edu.au/wp-content/uploads/sites/148/2019/05/Person-icon.jpg)`,
+            backgroundImage: `url(http://localhost:3001/getImg/${author.userPhoto})`,
 
             // author.userPhoto === ""
             //   ? `url(https://hccryde.syd.catholic.edu.au/wp-content/uploads/sites/148/2019/05/Person-icon.jpg)`

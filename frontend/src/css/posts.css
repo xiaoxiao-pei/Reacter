@@ -3,15 +3,35 @@
   background-color: #c2dcb1;
   border-radius: 10px 10px 0 0;
   padding: 0.5rem;
-  margin-bottom: 0.5rem;
-  /* width: 600px; */
+  margin: 0.5rem 0;
+  width: 600px;
   /* margin: 0.5rem; */
+}
+
+.postsHead {
+  background-color: #c2dcb1;
+  color: orange;
+  font-family: cursive;
+  font-size: 22px;
+  border-radius: 10px 10px 0 0;
+
+  padding: 0.5rem;
+}
+
+.postPartDis {
+  color: orange;
+  font-family: cursive;
+  font-size: 3rem;
+}
+.postPartDis:hover {
+  color: yellow;
+  font-size: 3.5rem;
 }
 
 .postCard {
   display: flex;
   justify-content: space-between;
-  width: 500px;
+  width: 100%;
 }
 
 .postHead {
@@ -36,10 +56,11 @@
 }
 .postFooter {
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-evenly;
   position: relative;
   left: 0.5rem;
   bottom: 3.5rem;
+  width: 25%;
 }
 .postBody,
 textarea {
@@ -96,18 +117,6 @@ textarea {
   padding: 0.5rem;
 }
 
-.addPost {
-  display: flex;
-  flex-direction: column;
-  width: 60%;
-  margin-top: 5rem;
-  background-color: #c2dcb1;
-}
-
-.addPostForm {
-  background-color: aliceblue;
-  margin-top: 3rem;
-}
 .postComments {
   positon: relative;
 }
@@ -161,4 +170,19 @@ textarea {
 }
 .addComment:hover {
   transform: scale(1.5);
+}
+
+.uploadImg {
+  /* display: flex;
+  justify-content: space-between;
+  align-items: flex-end; */
+}
+.addPost {
+  color: rgb(2, 2, 74);
+  margin: 3rem auto;
+  width: 40%;
+}
+
+.formTitle {
+  padding: 1rem 0;
 }

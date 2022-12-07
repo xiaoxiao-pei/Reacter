@@ -3,18 +3,7 @@ import { MdOutlineDoneOutline } from "react-icons/md";
 import { useState } from "react";
 import "../css/posts.css";
 function NewCommentItem({ postId, updateComList }) {
-  // I actually need the whole user object
-  //   const user = localStorage.getItem("user");
-  const user = {
-    _id: "638ce21e4c43b7b1ccbe7868",
-    userEmail: "alice@gmail.com",
-    userJoinTime: "2022-09-01 14:00:00",
-    userIsAdmin: "false",
-    userIsActive: "yes",
-    userMotto: "I am Alice2",
-    userPhoto: "",
-    userName: "Alice2",
-  };
+  const user = localStorage.getItem("user");
 
   const [newCom, setNewCom] = useState();
   const addDate = new Date().toLocaleTimeString();

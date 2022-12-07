@@ -7,8 +7,7 @@ import NewCommentItem from "./NewCommentItem";
 
 function Comments({ postId }) {
   const [commentList, setCommentList] = useState([]);
-  // const userId = localStorage.getItem("userId");
-  const userId = "638b879d586eb1728419bb01";
+
   const [showAdd, setShowAdd] = useState(false);
   useEffect(() => {
     console.log("recAuthors");

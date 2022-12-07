@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 import PostCard from "../components/PostCard";
 import { useParams } from "react-router-dom";
 import "../css/posts.css";
@@ -7,25 +7,24 @@ import "../css/posts.css";
 function Posts() {
   const [postList, setPostList] = useState([]);
   const [isAll, setIsAll] = useState(true);
-
-  // const user = localStorage.getItem("user");
-
-  const userId = "638b879d586eb1728419bb01";
-  const paraId = useParams("userId");
+  const { userId } = useParams();
+  const { userName } = useParams();
+  const user = localStorage.getItem("user");
+  const paraId = userId;
+  const paraUsername = userName;
   useEffect(() => {
-    console.log("recAuthors");
-    // to change
-    let userType = false;
     let id;
-    // if (!user || (isAll === true && user.isAdmin === false) || (paraId === undefined && user.isAdmin === true))
-    if (isAll === true && userType === false) {
+    if (
+      !user ||
+      (isAll === true && user.isAdmin === false) ||
+      (!paraUsername && user.isAdmin === true)
+    ) {
       fetch("http://localhost:3001/posts", {
         method: "GET",
       })
         .then((data) => data.json())
         .then((data) => {
-          // if (user === undefined){
-          if (userId === undefined) {
+          if (!user) {
             data = data.slice(-5);
           }
           setPostList([...data]);
@@ -34,12 +33,10 @@ function Posts() {
           // });
         });
     } else {
-      // if (user.isAdmin === false && isAll === false) {
-      if (userType === false) {
+      if (paraUsername) {
         id = paraId;
       } else {
-        // id = user._id
-        id = userId;
+        id = user._id;
       }
     }
     fetch(`http://localhost:3001/posts/${id}`, {
@@ -69,23 +66,29 @@ function Posts() {
 
   return (
     <div>
-      <div>
-        {/* {user.isAdmin ? null :<><h1>
-              <span onClick={showMine}>Mine</span>
-              <span onClick={showAll}> All</span>
-            </h1></>} */}
-        <h1 style={{ textAlign: "center" }}>
-          <span className="postPartDis" onClick={showMine}>
-            Mine
-          </span>
-          <span style={{ color: "orange", fontSize: "3rem" }}>/</span>
-          <span className="postPartDis" onClick={showAll}>
-            All
-          </span>
-        </h1>
+      <div className="postsHead">
+        {!user && <h1 style={{ textAlign: "center" }}>Lastest posts</h1>}
+        {user && !user.isAdmin && (
+          <>
+            <h1 style={{ textAlign: "center" }}>
+              <span className="postPartDis" onClick={showMine}>
+                Mine
+              </span>
+              <span style={{ color: "orange", fontSize: "3rem" }}>/</span>
+              <span className="postPartDis" onClick={showAll}>
+                All
+              </span>
+            </h1>
+          </>
+        )}
+        {user && user.isAdmin && (
+          <>
+            <h1>
+              <span>Posts of paraUserName</span>
+            </h1>
+          </>
+        )}
       </div>
-      {/* Title */}
-      {console.log(postList)}
       {postList.length > 0 &&
         postList.map((post, id) => (
           <div key={id}>

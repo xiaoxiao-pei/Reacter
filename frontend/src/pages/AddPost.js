@@ -1,31 +1,30 @@
 import React from "react";
-import Button from "@mui/material/Button";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useState } from "react";
-import "../css/App.css";
+// import "../css/App.css";
+import "../css/posts.css";
 import axios from "axios";
-// import { useContext } from "react";
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#C2DCB1",
-      darker: "#053e85",
-    },
-  },
-});
+import Button from "react-bootstrap/Button";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+
 export const AddPost = () => {
   const [newPost, setNewPost] = useState({});
-  // const userId = localStorage.getItem("userId");
-  const userId = "638ce1464c43b7b1ccbe7867";
+  const user = localStorage.getItem("user ");
+  const userId = user._id;
 
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user || user.userIsAdmin) {
+      navigate("/Login");
+    }
+  }, []);
   const handleSubmit = async (event) => {
-    console.log("subit");
     event.preventDefault();
     setNewPost({
       ...newPost,
       userId: userId,
       postTime: new Date(),
-      postLikes: 0,
     });
     console.log(newPost.postPhoto);
     const formData = new FormData();
@@ -34,7 +33,6 @@ export const AddPost = () => {
     formData.append("postTitle", newPost.postTitle);
     formData.append("postContent", newPost.postContent);
     formData.append("postTime", newPost.postTime);
-    formData.append("postLikes", newPost.postLikes);
     for (var pair of formData.entries()) {
       console.log(pair[0] + " - " + pair[1]);
     }
@@ -63,22 +61,21 @@ export const AddPost = () => {
     });
   };
   return (
-    <div className="row">
-      <form
-        className="AddPostForm col-8 col-md-6 col-lg-5 col-xl-4 text-center px-0"
-        onSubmit={handleSubmit}
-      >
-        <div className="form-body">
-          <div>
-            <h3 className="formTitle py-3">Create a new post</h3>
+    <div className="addPost">
+      <form className="addPostForm" onSubmit={handleSubmit}>
+        <div>
+          <div style={{ textAlign: "center" }}>
+            <h3 className="formTitle">Create a new post</h3>
           </div>
           <div>
             <input
+              maxLength={"100%"}
               name="postTitle"
               className="form__input mb-3"
               type="text"
               placeholder="Post Title"
               onChange={addInfo}
+              value={newPost.postTitle}
             />
           </div>
           <div>
@@ -88,9 +85,22 @@ export const AddPost = () => {
               type="text"
               placeholder="post content"
               onChange={addInfo}
+              value={newPost.postContent}
             />
           </div>
-          <div>
+          <div className="uploadImg">
+            <div
+              style={{
+                backgroundImage: `url(http://localhost:3001/getImg/${newPost.userPhoto})`,
+                backgroundRepeat: "no-repeat",
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                width: "100%",
+                height: "150px",
+                border: "1px solid red",
+                margin: "0 0 1rem 0 ",
+              }}
+            ></div>
             <input
               name="postPhoto"
               className="form__input mb-3"
@@ -103,11 +113,16 @@ export const AddPost = () => {
           </div>
 
           <div className="form_button mb-4">
-            <ThemeProvider theme={theme}>
-              <Button variant="contained" type="submit">
-                Create
-              </Button>
-            </ThemeProvider>
+            <Button
+              style={{
+                backgroundColor: "#c2dcb1",
+                border: "none",
+                color: "rgb(2, 2, 74)",
+              }}
+              type="submit"
+            >
+              Create
+            </Button>
           </div>
         </div>
       </form>

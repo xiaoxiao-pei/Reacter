@@ -5,7 +5,8 @@
   align-items: flex-start;
   /* padding: 5rem 2rem; */
   flex-wrap: wrap;
-  padding-top: 2rem;
+  padding-top: 4rem;
+  height: 750px;
 }
 
 .you {

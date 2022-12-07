@@ -1,11 +1,17 @@
 import Table from "react-bootstrap/Table";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import AuthorItem from "../components/AuthorItem";
 
 function Authors() {
   const [authorList, setAuthorList] = useState([]);
+  const user = localStorage.getItem("user");
+  const navigate = useNavigate();
   useEffect(() => {
+    if (!user || user.userIsAdmin) {
+      navigate("/Login");
+    }
     fetch("http://localhost:3001/users", {
       method: "GET",
     })

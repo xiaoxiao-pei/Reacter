@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Table from "react-bootstrap/Table";
+
 import "../css/authors.css";
 import { RiArticleFill } from "react-icons/ri";
 import { Navigate } from "react-router-dom";
@@ -17,10 +17,11 @@ function Rec_list() {
           return b.postCount - a.postCount;
         })
       )
-      .then((data) => setRecAuthors([...data]));
+      .then((data) => setRecAuthors([...data.slice(0, 5)]));
 
     return () => setRecAuthors([]);
   }, []);
+
   const showRecPosts = (userId) => {
     Navigate(`/home/recAuthorPosts/:${userId}`);
   };
@@ -40,10 +41,7 @@ function Rec_list() {
               <div
                 className="authorImg"
                 style={{
-                  backgroundImage: `url(https://hccryde.syd.catholic.edu.au/wp-content/uploads/sites/148/2019/05/Person-icon.jpg)`,
-                  // author.userPhoto === ""
-                  //   ? `url(https://hccryde.syd.catholic.edu.au/wp-content/uploads/sites/148/2019/05/Person-icon.jpg)`
-                  // : `url(http://localhost:3001/getImg/${author.userPhoto})`,
+                  backgroundImage: `url(http://localhost:3001/getImg/${author.userPhoto})`,
                 }}
               ></div>
 

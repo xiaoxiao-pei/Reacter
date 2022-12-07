@@ -2,7 +2,6 @@
   color: rgb(2, 2, 74);
   width: 300px;
   font-size: 22px;
-  margin-top: 3rem;
 }
 
 .authorList {
@@ -18,10 +17,11 @@
 .recListHead {
   background-color: #c2dcb1;
   text-align: center;
-  padding: 0.5rem 0;
   margin-bottom: 0.5rem;
   border-radius: 10px 10px 0 0;
-  font-size: 28px;
+  color: orange;
+  font-family: cursive;
+  font-size: 3rem;
   font-style: bold;
 }
 .authorImg {
@@ -47,14 +47,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-
   background-color: aliceblue;
   padding: 0.5rem 2rem;
   flex-wrap: wrap;
   margin: 0.5rem 0;
 }
 .postIcon {
-  background-color: #c2dcb1;
+  color: #b1dcb4;
   margin-right: 0.5rem;
 }
 

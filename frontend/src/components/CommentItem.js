@@ -4,8 +4,8 @@ import { TiDeleteOutline } from "react-icons/ti";
 import React, { useState, useRef, useEffect } from "react";
 
 function CommentItem({ sc }) {
-  //   const userId = localStorage.getItem("userId");
-  const userId = "638ce1464c43b7b1ccbe7867";
+  const user = localStorage.getItem("user");
+  const userId = user._id;
   const [owner, setOwner] = useState({});
   const [disap, setDisap] = useState(false);
 

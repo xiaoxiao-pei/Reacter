@@ -11,13 +11,12 @@ import AddPost from "./pages/AddPost.js";
 import MainLayout from "./layouts/MainLayout";
 import UserLayout from "./layouts/UserLayout";
 import AdminLayout from "./layouts/AdminLayout";
-import React, { useState, useEffect } from "react";
-import PostImage from "./components/PostImage";
-import UserImage from "./components/UserImage";
-// import Login from "./components/Login";s
-// import Registration from "./components/Registration";
+import React, { useState } from "react";
+import PostsUser from "./pages/Posts";
+import PostsAdmin from "./pages/Posts";
+
 import { useNavigate } from "react-router-dom";
-// import { Backhome } from "./pages/Backhome";
+
 import "bootstrap/dist/css/bootstrap.min.css";
 
 //administrator login statue
@@ -77,26 +76,22 @@ function App() {
         <Route path="/" element={<MainLayout />}>
           <Route index element={<Home />} />
           <Route path="about" element={<About />} />
-          <Route path="posts" element={<Posts />} />
-          <Route path="add" element={<AddPost />} />
           <Route path="register" element={<Registration />} />
-          <Route path="register/addphoto" element={<UserImage />} />
-          <Route path="signin" element={<Login />} />
+          <Route path="login" element={<Login />} />
+          <Route path="recAuthorPosts/:userId/:userName" element={<Posts />} />
+
           <Route path="/user" element={<UserLayout />}>
             <Route index element={<Profile />} />
-            <Route path="posts" element={<Posts />} />
+            <Route path="posts" element={<PostsUser />} />
             <Route path="add" element={<AddPost />} />
-            <Route
-              path="add/addphoto/:userId/:postTitle"
-              element={<PostImage />}
-            />
           </Route>
+
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<Profile />} />
-            <Route path="posts" element={<Posts />} />
+            <Route path="posts" element={<PostsAdmin />} />
             <Route path="authors" element={<Authors />} />
-            <Route path="author/Profile/:userId" element={<Profile />} />
-            <Route path="author/posts/:userId" element={<Posts />} />
+            <Route path="author/profile/:userId" element={<Profile />} />
+            <Route path="author/posts/:userId/:userName" element={<Posts />} />
           </Route>
           <Route path="*" element={<p>Invalid URL</p>} />
         </Route>
