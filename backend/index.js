@@ -74,18 +74,18 @@ app.use(bodyParser.json());
 
 
 /* User Registration*/
-app.post("/users/register", upload.single("photo"), async (request, response) => {
+app.post("/users/register", upload.single("userPhoto"), async (request, response) => {
     const id = request.body.id;
     const userName = request.body.userName;
-    console.log(userName);
     const userEmail = request.body.userEmail;
-    console.log(userEmail);
-    console.log(request.file);
-    console.log(request.body);
     const userPassword = request.body.userPassword;
     const userMotto = request.body.userMotto;
-    console.log(userMotto);
-    const userPhoto = request.file.filename;
+    let userPhoto;
+    if (request.file){
+        userPhoto = request.file.filename;
+    }else{
+        userPhoto = 'defaultUserPhoto.png';
+    }
 
     try {
         if (userName && validator.isAlphanumeric(userName) && userPassword) {

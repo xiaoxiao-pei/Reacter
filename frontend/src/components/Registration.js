@@ -70,7 +70,7 @@ function RegistrationForm() {
         formData.append('userEmail', email);
         formData.append('userPassword', password);
         formData.append('userMotto', motto);
-        formData.append('photo', photo);
+        formData.append('userPhoto', photo);
 
         for (var pair of formData.entries()) {
             console.log(pair[0] + " - " + pair[1]);
@@ -87,19 +87,6 @@ function RegistrationForm() {
             .catch((err) => {
                 console.log(err);
             });
-
-        // fetch("http://localhost:3001/users/register",
-        //     {
-        //         method: "POST",
-
-        //         body: formData
-
-        //     })
-        //     .then((data) => data.json())
-        //     .then((json) => {
-        //         alert(JSON.stringify(json) + ", Please login!");
-        //         navigate('/login');
-        //     });
 
     }
 
@@ -125,12 +112,12 @@ function RegistrationForm() {
                     <div>
                         < FaFileUpload className='form_icon' />
 
-                        {/* <ThemeProvider theme={theme}>
+                         <ThemeProvider theme={theme}>
                             <Button
                                 variant="contained"
                                 onClick={() => document.getElementById('userPhoto').click()} >
                                 Upload your photo</Button>
-                        </ThemeProvider> */}
+                        </ThemeProvider> 
 
 
                         <input
@@ -141,7 +128,7 @@ function RegistrationForm() {
                             type="file"
                             accept="image/gif,image/jpeg,image/jpg,image/png"
                             multiple
-                        // style={{ display: 'none' }}
+                        style={{ display: 'none' }}
                         />
                     </div>
 

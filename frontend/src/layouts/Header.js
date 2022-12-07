@@ -1,5 +1,5 @@
 import '../css/header.css'
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Navbar from 'react-bootstrap/Navbar';
@@ -12,7 +12,7 @@ function Header() {
 
     const navigate = useNavigate();
     const [isAdminLoggedIn, setIsAdminLoggedIn, isUserLoggedIn, setIsUserLoggedIn] = React.useContext(ReactContext);
-    const [user, setUser] = useState( localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null);
+    const [user, setUser] = useState();
 
 
     return (
@@ -34,13 +34,14 @@ function Header() {
                             </NavDropdown>
                         </Nav>
 
-                        {isUserLoggedIn && 
+                      {isUserLoggedIn && 
+                        // {user && !user.userIsAdmin && 
                             <button onClick={() => { navigate("/user/" + localStorage.getItem('userID') + "/profile") }}>Profile</button>
                         }
 
 
                         {/* if not login, show Register and login button */}
-                        {!(isAdminLoggedIn || isUserLoggedIn) &&
+                         {!(isAdminLoggedIn || isUserLoggedIn) && 
                             <div>
                                 <button onClick={() => { navigate("/register") }}>Register</button>
                                 <button onClick={() => { navigate("/login"); }}>Login</button>
@@ -51,8 +52,8 @@ function Header() {
                         {(isAdminLoggedIn || isUserLoggedIn) &&
                             <button
                                 onClick={() => {
-                                    //setIsAdminLoggedIn(false);
-                                    //setIsUserLoggedIn(false);
+                                    setIsAdminLoggedIn(false);
+                                    setIsUserLoggedIn(false);
                                     localStorage.clear("user");
                                     setUser(null);
                                     navigate("/")
@@ -64,7 +65,7 @@ function Header() {
             </Navbar>
             <div className='container my-3'>
                 <h3 style={{ color: 'white' }}>
-                    {localStorage.getItem('userName') ? "Welcome!" + localStorage.getItem('userName') : "Please login"}
+                    {(isAdminLoggedIn || isUserLoggedIn) ? "Welcome!" + localStorage.getItem('userName') : "Please login"}
                 </h3>
             </div>
 
