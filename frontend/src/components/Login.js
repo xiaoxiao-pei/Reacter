@@ -49,10 +49,11 @@ function LoginForm() {
                     localStorage.setItem("user", JSON.stringify(user));
                     if (user.userIsAdmin) {
                         setIsAdminLoggedIn(true);
+                        navigate('/admin');
                     } else {
-                        setIsUserLoggedIn(true);                     
+                        setIsUserLoggedIn(true); 
+                        navigate('/user');                    
                     }
-                    navigate('/user/' + user._id + '/profile');
                 }else{
                     setLoginSuccess(false);
                 }

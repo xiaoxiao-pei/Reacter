@@ -27,14 +27,18 @@ function UserProfile() {
     const [isMottoUpdated, setIsMottoUpdated] = useState(false);
     const [isStatuesUpdated, setIsStatuesUpdated] = useState(false);
 
-    let userID = useParams().id;
+    let userID = useParams().userId;
+
+    if (!userID){
+         userID = JSON.parse(localStorage.getItem('user'))._id
+    }
+    
 
     useEffect(() => {
 
         fetch("http://localhost:3001/user/" + userID, { method: "GET" })
             .then((data) => data.json())
             .then((json) => setUser(json))
-            //.then(() => setMotto(user.userMotto))
             .catch((error) => console.log(error))
     }, []);
 
@@ -138,7 +142,7 @@ function UserProfile() {
 
                             <div className='row my-3'>
                                 <div className='col-4 mt-3'><label className='d-flex justify-content-end'> Status:</label></div>
-
+                                    {/* if is admin, he can edit the status */}
                                 {user.userIsAdmin &&
                                     <>
                                         <div className='col-6'>

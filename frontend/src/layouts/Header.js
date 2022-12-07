@@ -1,5 +1,5 @@
 import '../css/header.css'
-import React from "react";
+import React, { useState } from "react";
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Navbar from 'react-bootstrap/Navbar';
@@ -8,19 +8,18 @@ import { useNavigate } from 'react-router-dom';
 import { ReactContext } from "../App";
 
 
-
-
 function Header() {
 
     const navigate = useNavigate();
     const [isAdminLoggedIn, setIsAdminLoggedIn, isUserLoggedIn, setIsUserLoggedIn] = React.useContext(ReactContext);
+    const [user, setUser] = useState( localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null);
 
 
     return (
         <div >
             <Navbar collapseOnSelect expand="md" bg="dark" variant="dark">
                 <Container>
-                    <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
+                    <Navbar.Brand href="#home">YMH</Navbar.Brand>
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className="me-auto">
@@ -52,10 +51,10 @@ function Header() {
                         {(isAdminLoggedIn || isUserLoggedIn) &&
                             <button
                                 onClick={() => {
-                                    setIsAdminLoggedIn(false);
-                                    setIsUserLoggedIn(false);
-                                    localStorage.clear("userName");
-                                    localStorage.clear("userID");
+                                    //setIsAdminLoggedIn(false);
+                                    //setIsUserLoggedIn(false);
+                                    localStorage.clear("user");
+                                    setUser(null);
                                     navigate("/")
                                 }} >
                                 logout</button>}

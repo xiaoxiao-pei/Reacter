@@ -11,6 +11,8 @@ import ForgetPwd from './components/ForgetPwd';
 import ResetPwd from './components/ResetPwd';
 import UserProfile from './components/UserProfile';
 import UpdatePWD from './components/UpdatePWD';
+import AdminLayout from './layouts/AdminLayout';
+import UserLayout from './layouts/UserLayout';
 
 export const ReactContext = React.createContext({
 
@@ -37,16 +39,25 @@ function App() {
       <ReactContext.Provider value={contextProvide}>
         <Routes>
           <Route path="/" element={<MainLayout />} >
+
             <Route index element={<Home />} />
             <Route path="about" element={<About />} />
             <Route path="register" element={<Registration />} />
             <Route path="login" element={<Login />} />
             <Route path="login/forgetPWD" element={<ForgetPwd />} />
-            <Route path="user/:id/resetPWD" element={<ResetPwd />} />
-            <Route path="user/:id/profile" element={<UserProfile />} />
-            <Route path="user/:id/updatePWD" element={<UpdatePWD />} />
-            {/* <Route path="user/:id/updatePWD" element={<UpdatePWD />} /> */}
-            <Route path="*" element={<p>Invalid URL</p>} />
+
+            <Route path="admin/" element={<AdminLayout />} >
+              <Route index element={<UserProfile />} />
+            </Route>
+
+            <Route path="user/" element={<UserLayout />} >
+              <Route index element={<UserProfile />} />
+              <Route path=":id/resetPWD" element={<ResetPwd />} />
+              <Route path="profile/:userid" element={<UserProfile />} />
+              <Route path=":id/updatePWD" element={<UpdatePWD />} />
+              <Route path="*" element={<p>Invalid URL</p>} />
+            </Route>
+
           </Route>
         </Routes>
       </ReactContext.Provider>
