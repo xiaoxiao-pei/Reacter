@@ -6,7 +6,7 @@ const PostSchema = new mongoose.Schema({
   },
   postTitle: {
     type: String,
-    required: false,
+    required: true,
   },
   postContent: {
     type: String,
@@ -14,7 +14,7 @@ const PostSchema = new mongoose.Schema({
   },
   postLikes: {
     type: Number,
-    required: false,
+    required: true,
   },
   postTime: {
     type: Date,
@@ -26,7 +26,7 @@ const PostSchema = new mongoose.Schema({
   },
   postCommentCount: {
     type: Number,
-    required: false,
+    required: true,
   },
 });
 const Post = mongoose.model("Post", PostSchema);

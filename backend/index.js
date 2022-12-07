@@ -29,136 +29,6 @@ db.once("open", function () {
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-// app.post("/users", async (req, res) => {
-//   const username = req.body.username;
-//   const password = req.body.password;
-//   const user = {
-//     username: username,
-//     password: password,
-//   };
-//   await userModel.create(user);
-//   res.send(user);
-// });
-
-// app.get("/user/username", async (req, res) => {
-//   const username = req.query.username;
-//   const user = await userModel.findOne({
-//     username: username,
-//   });
-//   res.send(user);
-// });
-
-// app.get("/users/:username", async (req, res) => {
-//   const username = req.params.username;
-//   const user = await userModel.findOne({
-//     username: username,
-//   });
-//   res.send(user);
-// });
-// app.post("/users/get", async (req, res) => {
-//   const username = req.body.username;
-//   const user = await userModel.findOne({
-//     userName: username,
-//   });
-//   res.send(user);
-// });
-app.put("/users", async (req, res) => {
-  const password = req.body.password;
-  const username = req.body.username;
-  const user = {
-    userName: username,
-    password: password,
-  };
-  const results = await userModel.replaceOne({ userName: username }, user);
-  console.log("matched: " + results.matchedCount);
-  console.log("modified: " + results.modifiedCount);
-  res.send(results);
-});
-app.patch("/users/:id", async (req, res) => {
-  const id = req.params.id;
-  const postcount = req.body.postcount;
-  console.log("now count is:" + req.body.postcount);
-  const results = await userModel.updateOne(
-    { id: id },
-    { postCount: postcount }
-  );
-  console.log("matched: " + results.matchedCount);
-  console.log("modified: " + results.modifiedCount);
-  res.send(results);
-});
-
-app.post("/users/login", async (request, response) => {
-  const username = request.body.username;
-  console.log(username);
-  const password = request.body.password;
-  console.log(password);
-  try {
-    if (username && password) {
-      console.log("compare");
-      // Check to see if the user already exists. If not, then create it.
-      const user = await userModel.findOne({ username: username });
-      console.log(user);
-      if (!user) {
-        console.log("no exist");
-        console.log("Invalid login - username " + username + " doesn't exist.");
-        response.send({ success: false });
-        return;
-      } else {
-        console.log("exist");
-        console.log(user.password);
-        const isSame = await bcrypt.compare(password, user.password);
-        console.log(isSame);
-        if (isSame) {
-          console.log("Successful login");
-          // response.send({ success: true });
-          response.send(user);
-          return;
-        }
-      }
-    }
-  } catch (error) {
-    console.log(error.message);
-  }
-
-  response.send({ success: false });
-});
-
-app.post("/users/register", async (request, response) => {
-  console.log("subit");
-  const id = request.body.id;
-  const username = request.body.username;
-  const password = request.body.password;
-  try {
-    if (
-      username &&
-      validator.isAlphanumeric(username) &&
-      password &&
-      validator.isStrongPassword(password)
-    ) {
-      // Check to see if the user already exists. If not, then create it
-      console.log("register");
-      user = await userModel.findOne({ username: username });
-      if (user) {
-        console.log(
-          "Invalid registration - username " + username + " already exists."
-        );
-        response.send({ success: false });
-        return;
-      } else {
-        hashedPassword = await bcrypt.hash(password, saltRounds);
-        console.log("Registering username " + username);
-        const userToSave = { username: username, password: hashedPassword };
-        await userModel.create(userToSave);
-        response.send({ success: true });
-        return;
-      }
-    }
-  } catch (error) {
-    console.log(error.message);
-  }
-  response.send({ success: false });
-});
-
 // posts collection interfaces
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -187,29 +57,12 @@ let upload = multer({
   fileFilter,
 });
 
-// app.patch("/photos/add", upload.single("photo"), async (req, res) => {
-//   const id = req.body.id;
-//   const photo = req.file.filename;
-//   // console.log("now count is:" + req.body.postcount);
-//   const results = await userModel.updateOne({ id: id }, { postPhoto: photo });
-//   console.log("matched: " + results.matchedCount);
-//   console.log("modified: " + results.modifiedCount);
-//   res.send(results);
-// });
-
 app.get("/posts", async (req, res) => {
   console.log("get postlist");
   const posts = await postModel.find();
   console.log(posts);
   res.send(posts);
 });
-
-// app.get("/posts/", async (req, res) => {
-//   console.log("get postlist");
-//   const posts = await postModel.find();
-//   console.log(posts);
-//   res.send(posts);
-// });
 
 app.get("/posts/:userId", async (req, res) => {
   const userId = req.params.userId;
@@ -275,7 +128,6 @@ app.post("/posts/create", upload.single("photo"), async (req, res) => {
   console.log(userId);
   const postTime = req.body.postTime;
   console.log(postTime);
-  const postLikes = req.body.postLikes;
   console.log(postLikes);
   const photo = req.file.filename;
   console.log(photo);
@@ -285,8 +137,9 @@ app.post("/posts/create", upload.single("photo"), async (req, res) => {
     postContent: postContent,
     userId: userId,
     postTime: postTime,
-    postLikes: postLikes,
+    postLikes: 0,
     postPhoto: photo,
+    postCommentCount: 0,
   };
   await postModel.create(post);
   res.send(post);
