@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 // import "../css/home.css";
 import Posts from "./Posts";
 import Rec_list from "../components/Rec_list";
+import "../css/home.css";
 
 const Home = () => {
   const [showCover, setShowCover] = useState(false);
@@ -18,23 +19,23 @@ const Home = () => {
 
   return (
     <div className="home">
-      {/* <Header /> */}
+      {/* <Header />
       {showCover ? (
-        <div className="homeContent">
+        
           <div className="image"></div>
 
           <div className="text">
             <h3 className="you">You, &nbsp;</h3>{" "}
             <h3 className="me">me &nbsp;</h3>{" "}
             <h3 className="and">and &nbsp;</h3> <h3 className="other">...</h3>
-          </div>
-        </div>
-      ) : (
-        <div className="homeContent">
-          <Posts />
-          !userId && <Rec_list />
-        </div>
-      )}
+          </div> */}
+
+      <div>
+        <Posts />
+      </div>
+      <div>
+        <Rec_list />
+      </div>
     </div>
   );
 };

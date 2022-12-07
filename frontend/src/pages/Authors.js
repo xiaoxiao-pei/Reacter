@@ -10,32 +10,46 @@ function Authors() {
       method: "GET",
     })
       .then((res) => res.json())
-      .then((data) => {
-        setAuthorList((authorList) => [...authorList, data]);
-      });
+      .then((data) => data.filter((d) => d.userIsAdmin !== true))
+      .then((data) => setAuthorList([...data]));
+    return () => setAuthorList([]);
   }, []);
 
+  const changeAuthorList = (id) =>
+    setAuthorList((authorList) => authorList.filter((a) => a._id !== id));
   return (
-    <div class="container">
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th></th>
-            <th>User Name</th>
-            <th>Email</th>
-            <th>Post Count</th>
-          </tr>
-        </thead>
-        <tbody>
-          {authorList.length > 0 &&
-            authorList.map((author) => (
-              <div class="author-row">
-                <AuthorItem authorList={author} />
-              </div>
-            ))}
-        </tbody>
-      </Table>
-    </div>
+    <>
+      <h2 className="userListTitle">All users List:</h2>
+      <div class="authorList">
+        <Table striped className="table-borderless" hover>
+          <thead className="recListHead">
+            <tr>
+              <th>Photo</th>
+              <th>User Name</th>
+              <th>Email</th>
+              <th>Post Count</th>
+            </tr>
+          </thead>
+          <tbody>
+            {authorList.length > 0 &&
+              authorList.map((author, id) => (
+                <tr
+                  className="text-center "
+                  style={{
+                    backgroundColor: "aliceblue",
+                    // margin: "3rem",
+                  }}
+                >
+                  <AuthorItem
+                    author={author}
+                    changeAuthorList={changeAuthorList}
+                  />
+                </tr>
+              ))}
+          </tbody>
+        </Table>
+      </div>
+    </>
   );
 }
 

@@ -3,52 +3,66 @@
   background-color: aquamarine;
   border-radius: 10px 10px 0 0;
   padding: 0.5rem;
-  margin: 0.5rem;
+  margin-bottom: 0.5rem;
+  /* width: 600px; */
+  /* margin: 0.5rem; */
 }
 
 .postCard {
   display: flex;
   justify-content: space-between;
-  /* background-color: aquamarine; */
-  /* margin: 1rem; */
+  width: 100%;
 }
 
 .postHead {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  background-color: aliceblue;
+  margin-right: -1rem;
+}
+
+.postHead span {
+  margin-right: 0.5rem;
 }
 
 .postHeadLeft {
   position: relative;
-  /* border-radius: 50%; */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 0;
+  margin-left: 0;
 }
 .postFooter {
   display: flex;
   justify-content: flex-start;
-  position: absolute;
+  position: relative;
   left: 0.5rem;
-  bottom: 0.5rem;
+  bottom: 3.5rem;
 }
-.postBody textarea {
+.postBody,
+textarea {
   height: 100%;
   width: 100%;
+  padding-left: 1rem;
 }
 
-/* .postCardPhoto {
+/* .postBody {
   width: 100%;
   height: 100%;
 } */
 
 .postCardLeft {
   width: 100%;
-  height: 150px;
+  height: 100px;
   background-color: white;
   position: relative;
   padding-right: 1rem;
 }
 .postCardPhoto {
-  width: 200px;
-  height: 150px;
+  width: 100px;
+  height: 100px;
   padding: 0.5rem;
 }
 
@@ -80,6 +94,7 @@
   display: flex;
   justify-content: space-between;
   margin: 0 0.5rem;
+  flex-wrap: wrap;
 }
 
 .commentHeadLeft .commentHeadRight {

@@ -72,38 +72,36 @@ function App() {
   // console.log(recAuthors);
   // onMouseMove={mouseMoveHandle}
   return (
-    <div>
-      <ReactContext.Provider value={contextProvide}>
-        <Routes>
-          <Route path="/" element={<MainLayout />}>
-            <Route index element={<Home />} />
-            <Route path="about" element={<About />} />
+    <ReactContext.Provider value={contextProvide}>
+      <Routes>
+        <Route path="/" element={<MainLayout />}>
+          <Route index element={<Home />} />
+          <Route path="about" element={<About />} />
+          <Route path="posts" element={<Posts />} />
+          <Route path="add" element={<AddPost />} />
+          <Route path="register" element={<Registration />} />
+          <Route path="register/addphoto" element={<UserImage />} />
+          <Route path="signin" element={<Login />} />
+          <Route path="/user" element={<UserLayout />}>
+            <Route index element={<Profile />} />
             <Route path="posts" element={<Posts />} />
             <Route path="add" element={<AddPost />} />
-            <Route path="register" element={<Registration />} />
-            <Route path="register/addphoto" element={<UserImage />} />
-            <Route path="signin" element={<Login />} />
-            <Route path="/user" element={<UserLayout />}>
-              <Route index element={<Profile />} />
-              <Route path="posts" element={<Posts />} />
-              <Route path="add" element={<AddPost />} />
-              <Route
-                path="add/addphoto/:userId/:postTitle"
-                element={<PostImage />}
-              />
-            </Route>
-            <Route path="/admin" element={<AdminLayout />}>
-              <Route index element={<Profile />} />
-              <Route path="posts" element={<Posts />} />
-              <Route path="authors" element={<Authors />} />
-              <Route path="author/Profile/:userId" element={<Profile />} />
-              <Route path="author/posts/:userId" element={<Posts />} />
-            </Route>
-            <Route path="*" element={<p>Invalid URL</p>} />
+            <Route
+              path="add/addphoto/:userId/:postTitle"
+              element={<PostImage />}
+            />
           </Route>
-        </Routes>
-      </ReactContext.Provider>
-    </div>
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<Profile />} />
+            <Route path="posts" element={<Posts />} />
+            <Route path="authors" element={<Authors />} />
+            <Route path="author/Profile/:userId" element={<Profile />} />
+            <Route path="author/posts/:userId" element={<Posts />} />
+          </Route>
+          <Route path="*" element={<p>Invalid URL</p>} />
+        </Route>
+      </Routes>
+    </ReactContext.Provider>
   );
 }
 

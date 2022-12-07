@@ -1,0 +1,76 @@
+.recList {
+  color: rgb(2, 2, 74);
+  width: 300px;
+  font-size: 22px;
+  margin-top: 3rem;
+}
+
+.authorList {
+  padding-top: 2rem;
+  color: rgb(2, 2, 74);
+  width: 75%;
+  font-size: 22px;
+  border-radius: 55px;
+  background-color: aquamarine;
+  padding: 1rem;
+  margin: 1% auto;
+}
+.recListHead {
+  background-color: aquamarine;
+  text-align: center;
+  padding: 0.5rem 0;
+  margin-bottom: 0.5rem;
+  border-radius: 10px 10px 0 0;
+  font-size: 28px;
+  font-style: bold;
+}
+.authorImg {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  /* margin: 0 auto; */
+}
+.authorPhoto {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin: 0 auto;
+}
+
+.authorRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  background-color: aliceblue;
+  padding: 0.5rem 2rem;
+  flex-wrap: wrap;
+  margin: 0.5rem 0;
+}
+.postIcon {
+  background-color: aquamarine;
+  margin-right: 0.5rem;
+}
+
+.userDeleteIcon {
+  color: red;
+  margin-left: 2.5rem;
+}
+
+.link {
+  color: rgb(2, 2, 74);
+}
+
+.userListTitle {
+  color: rgb(255, 251, 0);
+  font-family: cursive;
+  font-size: 5rem;
+  text-align: center;
+  margin-top: 8%;
+}

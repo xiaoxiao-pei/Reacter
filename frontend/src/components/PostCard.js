@@ -107,7 +107,15 @@ function PostCard({ p }) {
             <div className="postCardLeft">
               <div className="postHead">
                 <div className="postHeadLeft">
-                  <img src={owner.userPhoto} alt="avatar" />
+                  <div
+                    className="authorImg"
+                    style={{
+                      backgroundImage: `url(https://hccryde.syd.catholic.edu.au/wp-content/uploads/sites/148/2019/05/Person-icon.jpg)`,
+                      width: "30px",
+                      height: "30px",
+                    }}
+                  ></div>
+
                   <span>{owner.userName}</span>
                   <span>{post.postTitle}</span>
                 </div>

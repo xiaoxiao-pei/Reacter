@@ -61,10 +61,10 @@ function Posts() {
   };
   // if ueserId does not exist, show the latest 5 posts
   // user.userId && postList.length > 5 && setPostList([...postList.slice(-5)]);
-  !userId && postList.length > 5 && setPostList([...postList.slice(-5)]);
+  // !userId && postList.length > 5 && setPostList([...postList.slice(-5)]);
 
   return (
-    <>
+    <div>
       <div>
         {/* {user.isAdmin ? null :<><h1>
               <span onClick={showMine}>Mine</span>
@@ -83,7 +83,7 @@ function Posts() {
             <PostCard p={post} />
           </div>
         ))}
-    </>
+    </div>
   );
 }
 export default Posts;
