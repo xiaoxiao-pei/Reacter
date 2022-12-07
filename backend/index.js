@@ -29,10 +29,6 @@ db.once("open", function () {
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.get("/users", async (req, res) => {
-  const users = await userModel.find();
-  res.send(users);
-});
 // app.post("/users", async (req, res) => {
 //   const username = req.body.username;
 //   const password = req.body.password;
@@ -347,7 +343,19 @@ app.post("/comments/create", async (req, res) => {
   res.send(comment);
   console.log(comment);
 });
+app.get("/users", async (req, res) => {
+  console.log("get all users");
+  const users = await userModel.find();
+  console.log(users);
+  res.send(users);
+});
 
+app.delete("/users/:id", async (req, res) => {
+  console.log("delete user");
+  id = req.params.id;
+  results = await userModel.deleteOne({ userId: id });
+  res.send(results);
+});
 app.listen(port, () =>
   console.log(`Hello world app listening on port ${port}!`)
 );

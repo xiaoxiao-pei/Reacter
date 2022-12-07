@@ -24,6 +24,10 @@ const PostSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+  postCommentCount: {
+    type: Number,
+    required: false,
+  },
 });
 const Post = mongoose.model("Post", PostSchema);
 module.exports = Post;
