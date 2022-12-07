@@ -277,7 +277,7 @@ app.post("/reset-password/:id/:token", async (req, res) => {
     }
 });
 
-/* An API get request using query parameters to /users?_id=XXX */
+/*  get user by id */
 app.get("/user/:userid", async (req, res) => {
     const userID = req.params.userid;
     try {
@@ -287,6 +287,24 @@ app.get("/user/:userid", async (req, res) => {
         console.log(err);
     }
 });
+
+// get user photo
+app.get("/getImg/:photoname", async (req, res) => {
+    console.log("get image");
+    let img = req.params.photoname;
+    let path = `photos/${img}`;
+    console.log(img);
+    await fs.readFile(path, (err, data) => {
+        if (err) {
+            console.log("error reading file");
+            res.send("can.t get the image");
+        } else {
+            console.log(data);
+            res.send(data);
+        }
+    });
+});
+
 
 /* update Motto */
 app.patch("/users/:userid/motto", async (req, res) => {

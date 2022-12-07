@@ -69,7 +69,7 @@ function RegistrationForm() {
         formData.append('userName', username);
         formData.append('userEmail', email);
         formData.append('userPassword', password);
-        formData.append('userMotto',motto);
+        formData.append('userMotto', motto);
         formData.append('photo', photo);
 
         for (var pair of formData.entries()) {
@@ -79,7 +79,10 @@ function RegistrationForm() {
         axios
             .post("http://localhost:3001/users/register", formData)
             .then((res) => {
-                console.log(res);
+                if (res.data.success) {
+                    alert("Success! please login");
+                    navigate('/login');
+                }
             })
             .catch((err) => {
                 console.log(err);
@@ -138,7 +141,7 @@ function RegistrationForm() {
                             type="file"
                             accept="image/gif,image/jpeg,image/jpg,image/png"
                             multiple
-                            // style={{ display: 'none' }}
+                        // style={{ display: 'none' }}
                         />
                     </div>
 

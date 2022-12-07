@@ -82,7 +82,7 @@ function UserProfile() {
 
     return (user &&
         <div className='row'>
-            <form className="reactForm col-10 col-lg-8 col-xl-6 text-center px-0" >
+            <form className="reactForm col-10 col-lg-8  text-center px-0" >
                 <div className="form-body">
 
                     <div>
@@ -93,7 +93,22 @@ function UserProfile() {
                     <div className="row px-3">
 
                         <div className='d-inline col-12 col-md-6'>
-                            <div>img</div>
+
+                            <div
+                                className='mx-5'
+                                style={{
+                                    height: "50%",
+                                }}
+                            >
+                                <img
+                                    src={`http://localhost:3001/getImg/${user.userPhoto}`}
+                                    alt="user head"
+                                    style={{
+                                        //height: "100%",
+                                        width: "20vh",
+                                    }}
+                                />
+                            </div>
 
                             <div className='row my-3'>
                                 <div className='col-4 mt-3'><label className='d-flex justify-content-end'> Username:</label></div>
