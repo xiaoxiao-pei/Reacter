@@ -1,22 +1,44 @@
+import React, { useEffect, useState } from "react";
+// import "../css/home.css";
+import Posts from "./Posts";
+import Rec_list from "../components/Rec_list";
+import "../css/App.css";
 
-import React from 'react';
-//import DbData from '../components/DbData';
-// import DbData2 from '../components/DbData2';
-// import DbGetQueryPara from '../components/DbGetQueryPara';
-// import DbGetPara from '../components/DbGetPara';
-// import DbPostReadSingle from '../components/DbPostReadSingle';
-// import DbUpdatePut from '../components/DbUpdatePut';
-// import DbUpdatePatch from '../components/DbUpdatePatch';
-// import DbDelete from '../components/DbDelete';
-//import Register from '../components/Register';
-//import LoginForm from '../components/LoginForm';
+import { Header } from "../components/Header";
 
 const Home = () => {
-    return (
-        <div >
-            <p>posts show here... </p>
-        </div>
-    )
-};
+  const [showCover, setShowCover] = useState(true);
 
+  useEffect(() => {
+    console.log("time");
+    let wait = setTimeout(() => {
+      setShowCover(false);
+    }, 1000);
+    return () => {
+      clearTimeout(wait);
+    };
+  }, []);
+
+  return (
+    <>
+      <Header />
+      <div className="home">
+        {showCover ? (
+          <div className="cover">
+            <img src="YMHicon.png" />
+          </div>
+        ) : (
+          <>
+            <div>
+              <Posts />
+            </div>
+            <div>
+              <Rec_list />
+            </div>
+          </>
+        )}
+      </div>
+    </>
+  );
+};
 export default Home;

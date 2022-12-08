@@ -1,0 +1,28 @@
+.aboutus {
+    color: rgb(244, 238, 238);
+    height: calc(100vh - 52px - 90px);
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+#titleAbout{
+    color: rgb(244, 238, 238);
+    font-family: French Script MT, serif;
+    font-size: 300%;
+}
+
+.outBox{
+    height: 50vh;
+    border-radius: 30px;
+}
+
+.innerBox{
+    background-color: white;
+    color:black;
+    margin-top: 3vh;
+}
+
+/*# sourceMappingURL=About.css.map */

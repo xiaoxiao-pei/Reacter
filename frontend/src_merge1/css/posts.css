@@ -1,0 +1,224 @@
+.post {
+  position: relative;
+  background-color: #c2dcb1;
+  border-radius: 10px 10px 0 0;
+  padding: 0.5rem;
+  margin: 0.5rem 0;
+  width: 600px;
+  /* margin: 0.5rem; */
+}
+
+.individualPost {
+  margin: 4rem auto;
+}
+.postsHead {
+  background-color: #c2dcb1;
+  color: orange;
+  font-family: cursive;
+  font-size: 22px;
+  border-radius: 10px 10px 0 0;
+  width: 600px;
+  padding: 1rem;
+  text-align: center;
+}
+
+.postPartDis {
+  color: orange;
+  font-family: cursive;
+  font-size: 3rem;
+}
+.postPartDis:hover {
+  color: yellow;
+  font-size: 3.5rem;
+}
+
+.postCard {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.postHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: aliceblue;
+  margin-right: -1rem;
+}
+
+.postHead span {
+  margin-right: 0.5rem;
+}
+
+.postHeadLeft {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 0;
+  margin-left: 0;
+}
+.postFooter {
+  display: flex;
+  justify-content: space-evenly;
+  position: absolute;
+  left: 0.5rem;
+  bottom: 1rem;
+  width: 25%;
+}
+.postBody textarea {
+  height: 60%;
+  width: 100%;
+  padding-top: 0;
+  padding-left: 1rem;
+}
+.postBody div {
+  height: 60%;
+  width: 100%;
+  padding-left: 1rem;
+}
+.postDeleteIcon {
+  color: red;
+}
+.postDeleteIcon:hover {
+  transform: scale(1.3);
+}
+
+.likeIcon:hover {
+  color: red;
+  transform: scale(1.3);
+}
+
+.postEditDoneIcon {
+  transform: scale(1.3);
+}
+
+.postPartDis {
+  color: orange;
+  font-family: cursive;
+  font-size: 3rem;
+}
+.postPartDis:hover {
+  color: yellow;
+  font-size: 3.5rem;
+}
+
+.postEditIcon {
+  color: blue;
+}
+.postEditIcon:hover {
+  transform: scale(1.3);
+}
+
+.showCommentIcon:hover {
+  transform: scale(1.3);
+}
+/* .postBody {
+  width: 100%;
+  height: 100%;
+} */
+
+.postCardLeft {
+  width: 100%;
+  height: 100px;
+  background-color: white;
+  position: relative;
+  padding-right: 1rem;
+}
+.postCardPhoto {
+  width: 100px;
+  height: 100px;
+  padding: 0.5rem;
+}
+
+.postComments {
+  positon: relative;
+}
+
+.commentItem {
+  width: 95%;
+  position: relative;
+  background-color: aliceblue;
+  margin: 0 0.5rem 0 2rem;
+  padding: 0.5rem;
+}
+
+.commentHead {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 0.5rem;
+  flex-wrap: wrap;
+  position: relative;
+}
+
+.commentHeadLeft {
+  margin: 0 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.commentHeadRight {
+  position: absolute;
+  right: 0;
+}
+.commentBody {
+  background-color: white;
+  padding-left: 1rem;
+}
+
+.commentBody div,
+textarea {
+  width: 100%;
+  height: 100px;
+}
+
+.commentFooter {
+  padding: 0 0.5rem;
+  height: 10%;
+  position: relative;
+}
+.commentDelete {
+  position: absolute;
+  right: 0rem;
+  bottom: 0;
+}
+
+.commentDelete:hover {
+  color: red;
+}
+.addCommentDone {
+  position: absolute;
+  right: 0.5rem;
+  bottom: 0.5rem;
+  color: red;
+}
+
+.addComment {
+  color: rgb(255, 196, 0);
+  position: absolute;
+  bottom: -0.5rem;
+  right: -0.5rem;
+}
+.addComment:hover {
+  transform: scale(1.5);
+}
+
+.uploadImg {
+  /* display: flex;
+  justify-content: space-between;
+  align-items: flex-end; */
+}
+.addPost {
+  color: rgb(2, 2, 74);
+  margin: 3rem auto;
+  width: 40%;
+}
+
+.formTitle {
+  padding: 1rem 0;
+}
+
+.addPostForm {
+  background-color: aliceblue;
+}

@@ -1,6 +1,7 @@
 require('dotenv').config();
 const mongoose = require("mongoose");
-const userModel = require("./models");
+const userModel = require("./userModels");
+const postModel = require("./postModel");
 
 const validator = require('validator');
 const bcrypt = require('bcrypt');
@@ -23,7 +24,7 @@ const storage = multer.diskStorage({
         cb(null, "photos");
     },
     filename: function (req, file, cb) {
-        cb(null, file.fieldname + "-" + Date.now() + ".jpg");
+        cb(null, file.fieldname + "-" + file.originalname + Date.now() + ".jpg");
     },
 });
 
@@ -288,6 +289,16 @@ app.get("/user/:userid", async (req, res) => {
     }
 });
 
+app.get("/users/:userid", async (req, res) => {
+    const userID = req.params.userid;
+    try {
+        const user = await userModel.findOne({ _id: userID });
+        res.send(user);
+    } catch (err) {
+        console.log(err);
+    }
+});
+
 // get user photo
 app.get("/getImg/:photoname", async (req, res) => {
     console.log("get image");
@@ -385,6 +396,162 @@ app.patch("/users/:userid/resetPassword", async (req, res) => {
     }
     res.send({ success: false });
 });
+
+app.get("/posts", async (req, res) => {
+    console.log("get postlist:  ---------");
+    const posts = await postModel.find();
+    console.log(posts);
+    res.send(posts);
+});
+
+app.get("/posts/:userId", async (req, res) => {
+    const userId = req.params.userId;
+    const posts = await postModel.find({ userId: userId });
+    res.send(posts);
+});
+
+app.delete("/posts/:id/:photoname", async (req, res) => {
+    console.log("delete post");
+    id = req.params.id;
+    results = await postModel.deleteOne({ _id: id });
+    let img = req.params.photoname;
+    let path = `photos/${img}`;
+    false.unlinkSync(path);
+    res.send(results);
+});
+
+app.patch("/posts/likes/:id", async (req, res) => {
+    const id = req.params.id;
+    const postLikes = req.body.postLikes;
+
+    const results = await postModel.updateOne(
+        { _id: id },
+        { postLikes: postLikes }
+    );
+    console.log("matched: " + results.matchedCount);
+    console.log("modified: " + results.modifiedCount);
+    res.send(results);
+});
+
+app.patch("/posts/comments/:id", async (req, res) => {
+    const id = req.params.id;
+    const postCommentCount = req.body.postCommentCount;
+
+    const results = await postModel.updateOne(
+        { _id: id },
+        { postCommentCount: postCommentCount }
+    );
+    console.log("matched: " + results.matchedCount);
+    console.log("modified: " + results.modifiedCount);
+    res.send(results);
+});
+
+
+// app.get("/users/:id", async (req, res) => {
+//     console.log("get single owner ------------");
+//     const userId = req.params.id;
+//     console.log("get single owner: ------------" + userId);
+//     const user = await userModel.findOne({
+//         _id: userId,
+//     });
+//     console.log("owner:" + user);
+//     res.send(user);
+// });
+
+app.post("/posts/create", upload.single("photo"), async (req, res) => {
+    console.log("create post------------");
+    const postTitle = req.body.postTitle;
+    console.log(postTitle);
+    const postContent = req.body.postContent;
+    console.log(postContent);
+    const userId = req.body.userId;
+    console.log(userId);
+    const postTime = req.body.postTime;
+    console.log(postTime);
+    const photo = req.file.filename;
+    console.log(photo);
+
+    const post = {
+        postTitle: postTitle,
+        postContent: postContent,
+        userId: userId,
+        postTime: postTime,
+        postLikes: 0,
+        postPhoto: photo,
+        postCommentCount: 0,
+    };
+    await postModel.create(post);
+    res.send(post);
+});
+
+app.get("/getImg/:photoname", async (req, res) => {
+    console.log("get image");
+    let img = req.params.photoname;
+
+    let path = `photos/${img}`;
+
+    await fs.readFile(path, (err, data) => {
+        if (err) {
+            path = "photos/photo-1670429542463.jpg";
+            fs.readFile(path, (err, data) => {
+                if (err) {
+                    console.log(err.message);
+                } else {
+                    res.send(data);
+                }
+            });
+        } else {
+            res.send(data);
+        }
+    });
+});
+// comments collection interfaces
+app.get("/comments/:id", async (req, res) => {
+    console.log("get comments list------------");
+    const id = req.params.id;
+    const comments = await commentModel.find({
+        postId: id,
+    });
+    console.log(comments);
+    res.send(comments);
+});
+app.delete("/comments/:id", async (req, res) => {
+    console.log("delete one comment");
+    id = req.params.id;
+    results = await commentModel.deleteOne({ id: id });
+    res.send(results);
+});
+app.post("/comments/create", async (req, res) => {
+    console.log("create comment------------");
+    const userId = req.body.userId;
+    const commentContent = req.body.commentContent;
+    const commentTime = req.body.commentTime;
+    const postId = req.body.postId;
+    const comment = {
+        commentContent: commentContent,
+        userId: userId,
+        commentTime: commentTime,
+        postId: postId,
+    };
+    await commentModel.create(comment);
+    res.send(comment);
+});
+app.get("/users", async (req, res) => {
+    console.log("get all users");
+    const users = await userModel.find();
+    console.log(users);
+    res.send(users);
+});
+
+app.delete("/users/:id", async (req, res) => {
+    console.log("delete user");
+    id = req.params.id;
+    results = await userModel.deleteOne({ userId: id });
+    res.send(results);
+});
+
+
+
 
 
 app.listen(port, () =>

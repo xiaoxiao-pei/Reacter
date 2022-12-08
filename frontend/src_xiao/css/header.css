@@ -1,0 +1,43 @@
+.my-navbar:visited {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 16px;
+}
+
+.my-navbar:hover {
+    text-decoration: none;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: #c10944;
+    font-size: 16px;
+    background-color: #61dafb;
+}
+
+.nav-navbar:active {
+    color: #c10944;
+    font-size: 16px;
+    background-color: #61dafb;
+}
+
+.header .my-3 span {
+    color: #E1ED04;
+    margin-right: 10px;
+}
+
+.header .me-auto-right {
+    flex: 1;
+    justify-content: flex-end;
+}
+
+.header .me-auto-right .nav-link:hover {
+    text-decoration: underline;
+}
+
+.link-inactive {
+    color: blue;
+}
+
+/* Specific styles for active links */
+
+.link-active {
+    color: green;
+    background: orange;
+}

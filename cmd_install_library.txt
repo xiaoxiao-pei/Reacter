@@ -1,7 +1,12 @@
-1.react icons: 
-	install: npm install react-icons --save
-	import:  import { IconName } from "react-icons/fa";
 
-2.	npm install jsonwebtoken
 
-	npm install nodemailer
+ npm install react-icons --save
+
+ npm install axios
+
+
+ npm install jsonwebtoken
+
+ npm install nodemailer
+
+npm install --save multer
