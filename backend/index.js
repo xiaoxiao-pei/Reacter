@@ -90,32 +90,28 @@ app.patch("/posts/:id", async (req, res) => {
   res.send(results);
 });
 
+// app.patch("/posts/:id", async (req, res) => {
+//   const postId = req.params.id;
+//   const postLikes = req.body.postLikes;
+
+//   // console.log("now count is:" + req.body.postcount);
+//   const results = await postModel.updateOne(
+//     { id: postId },
+//     { postLikes: postLikes }
+//   );
+//   console.log("matched: " + results.matchedCount);
+//   console.log("modified: " + results.modifiedCount);
+//   res.send(results);
+// });
+
 app.get("/users/:id", async (req, res) => {
   console.log("get user------------");
   const userid = req.params.id;
   const user = await userModel.findOne({
     id: userid,
   });
-  // console.log(user);
+  console.log("owner:" + user);
   res.send(user);
-});
-
-app.patch("/posts/addphoto", upload.single("photo"), async (req, res) => {
-  console.log("add photo");
-  const userId = req.body.userId;
-  const postTitle = req.body.postTitle;
-  const postPhoto = req.file.filename;
-  console.log(postTitle);
-  console.log(userId);
-  // console.log("now count is:" + req.body.postcount);
-  const results = await postModel.updateOne(
-    { userId: userId },
-    { postTitle: postTitle },
-    { postPhoto: postPhoto }
-  );
-  console.log("matched: " + results.matchedCount);
-  console.log("modified: " + results.modifiedCount);
-  res.send(results);
 });
 
 app.post("/posts/create", upload.single("photo"), async (req, res) => {
@@ -143,20 +139,25 @@ app.post("/posts/create", upload.single("photo"), async (req, res) => {
   };
   await postModel.create(post);
   res.send(post);
-  console.log(post);
 });
 
 app.get("/getImg/:photoname", async (req, res) => {
   console.log("get image");
   let img = req.params.photoname;
+
   let path = `photos/${img}`;
-  console.log(img);
+
   await fs.readFile(path, (err, data) => {
     if (err) {
-      console.log("error reading file");
-      res.send("can.t get the image");
+      path = "photos/photo-1670429542463.jpg";
+      fs.readFile(path, (err, data) => {
+        if (err) {
+          console.log(err.message);
+        } else {
+          res.send(data);
+        }
+      });
     } else {
-      console.log(data);
       res.send(data);
     }
   });
@@ -168,7 +169,7 @@ app.get("/comments/:id", async (req, res) => {
   const comments = await commentModel.find({
     postId: id,
   });
-  // console.log(user);
+  console.log(comments);
   res.send(comments);
 });
 app.delete("/comments/:id", async (req, res) => {
@@ -180,12 +181,9 @@ app.delete("/comments/:id", async (req, res) => {
 app.post("/comments/create", async (req, res) => {
   console.log("create comment------------");
   const userId = req.body.userId;
-
   const commentContent = req.body.commentContent;
-
   const commentTime = req.body.commentTime;
   const postId = req.body.postId;
-
   const comment = {
     commentContent: commentContent,
     userId: userId,
@@ -209,6 +207,115 @@ app.delete("/users/:id", async (req, res) => {
   results = await userModel.deleteOne({ userId: id });
   res.send(results);
 });
+
+//users collection
+
+/* User Registration*/
+app.post(
+  "/users/register",
+  upload.single("userPhoto"),
+  async (request, response) => {
+    const id = request.body.id;
+    const userName = request.body.userName;
+    const userEmail = request.body.userEmail;
+    const userPassword = request.body.userPassword;
+    const userMotto = request.body.userMotto;
+    let userPhoto;
+    if (request.file) {
+      userPhoto = request.file.filename;
+    } else {
+      userPhoto = "defaultUserPhoto.png";
+    }
+
+    try {
+      if (userName && validator.isAlphanumeric(userName) && userPassword) {
+        // Check to see if the user already exists. If not, then create it.
+        const user = await userModel.findOne({ userName: userName });
+        const email = await userModel.findOne({ userEmail: userEmail });
+        if (user) {
+          console.log(
+            "Invalid registration - username " + userName + " already exists."
+          );
+          response.send({ success: false });
+          return;
+        } else if (email) {
+          console.log(
+            "Invalid registration - email " + userEmail + " already exists."
+          );
+          response.send({ success: false });
+          return;
+        } else {
+          hashedPassword = await bcrypt.hash(userPassword, saltRounds);
+          console.log("Registering username " + userName);
+          const userToSave = {
+            userName: userName,
+            userEmail: userEmail,
+            userPassword: hashedPassword,
+            userMotto: userMotto,
+            userJoinTime: new Date(),
+            userIsAdmin: false,
+            userPostCount: 0,
+            userIsActive: true,
+            userPhoto: userPhoto,
+          };
+          await userModel.create(userToSave);
+          response.send({ success: true });
+          return;
+        }
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+    response.send({ success: false });
+  }
+);
+
+/* Login */
+app.post("/users/login", async (request, response) => {
+  const email = request.body.email;
+  const password = request.body.password;
+  try {
+    if (email && password) {
+      // Check to see if the user already exists. If not, then create it.
+      const user = await userModel.findOne({ userEmail: email });
+      if (!user) {
+        console.log("Invalid login - email " + email + " doesn't exist.");
+        response.send({ success: false });
+        return;
+      } else {
+        const isSame = await bcrypt.compare(password, user.userPassword);
+        if (isSame) {
+          console.log("Successful login");
+          response.send({
+            // return userID, userName, isAdmin in Json format
+            success: true,
+            user: user,
+          });
+          return;
+        }
+      }
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
+  response.send({ success: false });
+});
+
+app.patch("/users/:id", async (req, res) => {
+  console.log("add photo");
+  const userId = req.params.id;
+  const userPostCount = req.body.userPostCount;
+
+  // console.log("now count is:" + req.body.postcount);
+  const results = await postModel.updateOne(
+    { id: userId },
+    { userPostCount: userPostCount }
+  );
+  console.log("matched: " + results.matchedCount);
+  console.log("modified: " + results.modifiedCount);
+  res.send(results);
+});
+
 app.listen(port, () =>
   console.log(`Hello world app listening on port ${port}!`)
 );
