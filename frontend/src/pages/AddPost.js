@@ -9,24 +9,24 @@ import { useEffect } from "react";
 
 export const AddPost = () => {
   const [newPost, setNewPost] = useState({});
-  const user = localStorage.getItem("user ");
-  const userId = user._id;
+  let user = localStorage.getItem("user");
+  user = user && JSON.parse(user);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!user || user.userIsAdmin) {
-      navigate("/Login");
+    if (!user || (user && user.userIsAdmin)) {
+      navigate("/login");
     }
   }, []);
   const handleSubmit = async (event) => {
     event.preventDefault();
     setNewPost({
       ...newPost,
-      userId: userId,
+      userId: user._id,
       postTime: new Date(),
     });
-    console.log(newPost.postPhoto);
+    console.log(newPost.photo);
     const formData = new FormData();
     formData.append("photo", newPost.photo);
     formData.append("userId", newPost.userId);
@@ -36,14 +36,30 @@ export const AddPost = () => {
     for (var pair of formData.entries()) {
       console.log(pair[0] + " - " + pair[1]);
     }
-    console.log(formData);
+
     axios
       .post("http://localhost:3001/posts/create", formData)
       .then((res) => {
-        console.log(res);
+        setNewPost(res);
       })
-      .catch((err) => {
-        console.log(err);
+      .then(() => {
+        fetch(`http://localhost:3001/users/posts/${user._id}`, {
+          method: "PATCH",
+          body: JSON.stringify({
+            id: user._id,
+            userPostCount: user.userPostCount + 1,
+          }),
+          headers: {
+            "Content-type": "application/json;charset=UTF-8",
+          },
+        })
+          .then((data) => {
+            data.json();
+          })
+          .then(() => alert("post is created successfully"))
+          .catch((err) => {
+            console.log(err);
+          });
       });
   };
 
@@ -55,9 +71,8 @@ export const AddPost = () => {
     setNewPost({
       ...newPost,
       photo: e.target.files[0],
-      userId: userId,
+      userId: user._id,
       postTime: new Date(),
-      postLikes: 0,
     });
   };
   return (
@@ -75,7 +90,6 @@ export const AddPost = () => {
               type="text"
               placeholder="Post Title"
               onChange={addInfo}
-              value={newPost.postTitle}
             />
           </div>
           <div>
@@ -85,19 +99,20 @@ export const AddPost = () => {
               type="text"
               placeholder="post content"
               onChange={addInfo}
-              value={newPost.postContent}
             />
           </div>
           <div className="uploadImg">
             <div
               style={{
-                backgroundImage: `url(http://localhost:3001/getImg/${newPost.userPhoto})`,
+                backgroundImage:
+                  newPost.postPhoto &&
+                  `url(http://localhost:3001/getImg/${newPost.userPhoto}`,
                 backgroundRepeat: "no-repeat",
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 width: "100%",
                 height: "150px",
-                border: "1px solid red",
+                border: "1px solid gray",
                 margin: "0 0 1rem 0 ",
               }}
             ></div>

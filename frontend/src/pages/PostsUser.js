@@ -6,8 +6,8 @@ function PostsUser() {
   const user = localStorage.getItem("user");
   const navigate = useNavigate();
   useEffect(() => {
-    if (!user || user.userIsAdmin) {
-      navigate("/Login");
+    if (!user || !user.userIsUser) {
+      navigate("/login");
     }
   }, []);
 

@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 
 import "../css/authors.css";
 import { RiArticleFill } from "react-icons/ri";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 function Rec_list() {
   const [recAuthors, setRecAuthors] = useState([]);
-
+  const navigate = useNavigate();
   useEffect(() => {
     fetch("http://localhost:3001/users", {
       method: "GET",
@@ -22,8 +22,8 @@ function Rec_list() {
     return () => setRecAuthors([]);
   }, []);
 
-  const showRecPosts = (userId) => {
-    Navigate(`/home/recAuthorPosts/:${userId}`);
+  const showRecPosts = (author) => {
+    navigate(`/recAuthorPosts/${author._id}/${author.userName}`);
   };
 
   return (
@@ -34,24 +34,25 @@ function Rec_list() {
 
       {recAuthors !== undefined &&
         recAuthors.map((author, id) => (
-          <>
-            <div className="authorRow" key={id}>
-              {console.log(author)}
+          <div className="authorRow" key={id}>
+            {console.log(author)}
 
-              <div
-                className="authorImg"
-                style={{
-                  backgroundImage: `url(http://localhost:3001/getImg/${author.userPhoto})`,
-                }}
-              ></div>
+            <div
+              className="authorImg"
+              style={{
+                backgroundImage: `url(http://localhost:3001/getImg/${author.userPhoto})`,
+              }}
+            ></div>
 
-              <div>{author.userName}</div>
-              <div onClick={() => showRecPosts(author._id)}>
-                <RiArticleFill className="postIcon" />
-                <span>{author.userPostCount}</span>
-              </div>
+            <div>{author.userName}</div>
+            <div>
+              <RiArticleFill
+                onClick={() => showRecPosts(author)}
+                className="postIcon"
+              />
+              <span>{author.userPostCount}</span>
             </div>
-          </>
+          </div>
         ))}
     </div>
   );

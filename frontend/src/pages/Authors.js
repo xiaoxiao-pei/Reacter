@@ -6,11 +6,13 @@ import AuthorItem from "../components/AuthorItem";
 
 function Authors() {
   const [authorList, setAuthorList] = useState([]);
-  const user = localStorage.getItem("user");
+  let user = localStorage.getItem("user");
+  user = user && JSON.parse(user);
   const navigate = useNavigate();
+
   useEffect(() => {
-    if (!user || user.userIsAdmin) {
-      navigate("/Login");
+    if (!user || !user.userIsAdmin) {
+      navigate("/login");
     }
     fetch("http://localhost:3001/users", {
       method: "GET",

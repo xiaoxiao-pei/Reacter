@@ -3,42 +3,42 @@ import React, { useEffect, useState } from "react";
 import Posts from "./Posts";
 import Rec_list from "../components/Rec_list";
 import "../css/home.css";
-import Icon from "../components/Icon";
+
+import { Header } from "../components/Header";
 
 const Home = () => {
-  const [showCover, setShowCover] = useState(false);
+  const [showCover, setShowCover] = useState(true);
 
   useEffect(() => {
     console.log("time");
     let wait = setTimeout(() => {
       setShowCover(false);
-    }, 3000);
+    }, 2000);
     return () => {
       clearTimeout(wait);
     };
   }, []);
 
   return (
-    <div className="home">
-      {/* <Icon /> */}
-      {/* <Header />
-      {showCover ? (
-        
-          <div className="image"></div>
-
-          <div className="text">
-            <h3 className="you">You, &nbsp;</h3>{" "}
-            <h3 className="me">me &nbsp;</h3>{" "}
-            <h3 className="and">and &nbsp;</h3> <h3 className="other">...</h3>
-          </div> */}
-
-      <div>
-        <Posts />
+    <>
+      <Header />
+      <div className="home">
+        {showCover ? (
+          <div className="cover">
+            <img src="YMHicon.png" />
+          </div>
+        ) : (
+          <>
+            <div>
+              <Posts />
+            </div>
+            <div>
+              <Rec_list />
+            </div>
+          </>
+        )}
       </div>
-      <div>
-        <Rec_list />
-      </div>
-    </div>
+    </>
   );
 };
 export default Home;

@@ -9,28 +9,28 @@ function Posts() {
   const [isAll, setIsAll] = useState(true);
   const { userId } = useParams();
   const { userName } = useParams();
-  const user = localStorage.getItem("user");
+  let user = localStorage.getItem("user");
+  user = user && JSON.parse(user);
+
+  // user = user && user.json();
   const paraId = userId;
   const paraUsername = userName;
+  console.log(paraUsername);
+
   useEffect(() => {
     let id;
     if (
-      !user ||
-      (isAll === true && user.isAdmin === false) ||
-      (!paraUsername && user.isAdmin === true)
+      (!user && !paraUsername) ||
+      (user && !user.userIsAdmin && isAll) ||
+      (user && user.userIsAdmin && !paraUsername)
     ) {
+      console.log("show all -------");
       fetch("http://localhost:3001/posts", {
         method: "GET",
       })
         .then((data) => data.json())
         .then((data) => {
-          if (!user) {
-            data = data.slice(-5);
-          }
           setPostList([...data]);
-          // data.map((d) => {
-          //   setPostList((postList) => [...postList, d]);
-          // });
         });
     } else {
       if (paraUsername) {
@@ -38,16 +38,15 @@ function Posts() {
       } else {
         id = user._id;
       }
-    }
-    fetch(`http://localhost:3001/posts/${id}`, {
-      method: "GET",
-    })
-      .then((data) => data.json())
-      .then((data) => {
-        data.map((d) => {
-          setPostList([...postList, d]);
+
+      fetch(`http://localhost:3001/posts/${id}`, {
+        method: "GET",
+      })
+        .then((d) => d.json())
+        .then((d) => {
+          setPostList([...d]);
         });
-      });
+    }
     return () => setPostList([]);
   }, [isAll]);
 
@@ -65,10 +64,12 @@ function Posts() {
   // !userId && postList.length > 5 && setPostList([...postList.slice(-5)]);
 
   return (
-    <div>
+    <div className="individualPost">
       <div className="postsHead">
-        {!user && <h1 style={{ textAlign: "center" }}>Lastest posts</h1>}
-        {user && !user.isAdmin && (
+        {!user && !paraUsername && (
+          <h1 style={{ textAlign: "center" }}>Lastest posts</h1>
+        )}
+        {user && !user.userIsAdmin && (
           <>
             <h1 style={{ textAlign: "center" }}>
               <span className="postPartDis" onClick={showMine}>
@@ -81,13 +82,14 @@ function Posts() {
             </h1>
           </>
         )}
-        {user && user.isAdmin && (
-          <>
-            <h1>
-              <span>Posts of paraUserName</span>
-            </h1>
-          </>
-        )}
+        {(!user && paraUsername) ||
+          (user && user.userIsAdmin && paraUsername && (
+            <>
+              <h1 style={{ textAlign: "center" }}>
+                <span>Posts of {paraUsername}</span>
+              </h1>
+            </>
+          ))}
       </div>
       {postList.length > 0 &&
         postList.map((post, id) => (

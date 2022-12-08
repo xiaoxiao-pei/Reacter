@@ -1,7 +1,18 @@
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import "../css/authors.css";
 import { RiDeleteBin5Line } from "react-icons/ri";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 function AuthorItem({ author, changeAuthorList }) {
+  let user = localStorage.getItem("user");
+  user = JSON.parse(user);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user || (user && !user.userIsAdmin)) {
+      navigate("/login");
+    }
+  }, []);
   const deleteUser = (id) => {
     fetch(`http://localhost:3001/users/${id}`, { method: "DELETE" })
       .then((data) => data.json())
@@ -15,26 +26,20 @@ function AuthorItem({ author, changeAuthorList }) {
           className="authorPhoto"
           style={{
             backgroundImage: `url(http://localhost:3001/getImg/${author.userPhoto})`,
-
-            // author.userPhoto === ""
-            //   ? `url(https://hccryde.syd.catholic.edu.au/wp-content/uploads/sites/148/2019/05/Person-icon.jpg)`
-            //   : `url(http://localhost:3001/getImg/${author.userPhoto})`,
-            // width: "20px",
-            // height: "20px",
-            // backgroundRepeat: "no-repeat",
-            // backgroundSize: "cover",
-            // backgroundPosition: "center",
           }}
         ></div>
       </td>
       <td>
-        <Link className="link" to={`/admin/profile/${author}`}>
+        <Link className="link" to={`/admin/profile/${author._id}`}>
           {author.userName}
         </Link>
       </td>
       <td>{author.userEmail}</td>
       <td>
-        <Link className="link" to={`/admin/post/${author.id}`}>
+        <Link
+          className="link"
+          to={`/admin/author/posts/${author._id}/${author.userName}`}
+        >
           {author.userPostCount}
         </Link>
         <RiDeleteBin5Line

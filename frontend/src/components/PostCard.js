@@ -11,7 +11,8 @@ import { VscComment } from "react-icons/vsc";
 import "../css/posts.css";
 
 function PostCard({ p }) {
-  const user = localStorage.getItem("user");
+  let user = localStorage.getItem("user");
+  user = user && JSON.parse(user);
 
   const postContentRef = useRef();
   const navigate = useNavigate();
@@ -23,13 +24,16 @@ function PostCard({ p }) {
   const [disap, setDisap] = useState(false);
 
   useEffect(() => {
-    fetch(`http://localhost:3001/users/:${p.userId}`, {
+    console.log(p.userId);
+    console.log("post card ...");
+    fetch(`http://localhost:3001/users/${p.userId}`, {
       method: "GET",
     })
       .then((data) => data.json())
       .then((data) => {
         setOwner({ ...data });
       });
+    return () => setOwner([]);
   }, []);
 
   console.log(owner);
@@ -52,7 +56,7 @@ function PostCard({ p }) {
       postLikes = post.postLikes + 1;
     }
     // change database
-    fetch(`http://localhost:3001/posts/:${id}`, {
+    fetch(`http://localhost:3001/posts/likes/${id}`, {
       method: "PATCH",
       body: JSON.stringify({
         id: id,
@@ -72,9 +76,30 @@ function PostCard({ p }) {
   };
 
   const deletePost = (id) => {
-    fetch(`http://localhost:3001/posts/${id}`, { method: "DELETE" })
+    fetch(`http://localhost:3001/posts/${id}/${p.postPhoto}`, {
+      method: "DELETE",
+    })
       .then((data) => data.json())
       .then((data) => console.log(data))
+      .then(() => {
+        console.log("add comment");
+        fetch(`http://localhost:3001/users/posts/${owner._id}`, {
+          method: "PATCH",
+          body: JSON.stringify({
+            id: post._id,
+            userPostCount: owner.postCommentCount - 1,
+          }),
+          headers: {
+            "Content-type": "application/json;charset=UTF-8",
+          },
+        })
+          .then(() => {
+            alert("successful deletion");
+          })
+          .catch((err) => {
+            alert("server error: " + err.message);
+          });
+      })
       .then(() => setDisap(true));
   };
 
@@ -130,16 +155,16 @@ function PostCard({ p }) {
                     <textarea
                       defaultValue={post.postContent}
                       ref={postContentRef}
-                      className="postBody"
                     ></textarea>
                   ) : (
-                    <span>{post.postContent}</span>
+                    <div>{post.postContent}</div>
                   ))}
               </div>
 
               <div className="postFooter">
-                <div className="likeIcon">
+                <div>
                   <AiTwotoneHeart
+                    className="likeIcon"
                     style={{ color: ifLike && "red" }}
                     onClick={() => addLike(post._id)}
                   />
@@ -185,7 +210,7 @@ function PostCard({ p }) {
             <div
               className="postCardPhoto"
               style={{
-                backgroundImage: `url(http://localhost:3001/getImg/${owner.userPhoto})`,
+                backgroundImage: `url(http://localhost:3001/getImg/${post.postPhoto})`,
                 backgroundRepeat: "no-repeat",
                 backgroundSize: "cover",
                 backgroundPosition: "center",
@@ -194,7 +219,7 @@ function PostCard({ p }) {
               {/* todo */}
             </div>
           </div>
-          {ifShowComments ? <Comments postId={post._id} /> : null}
+          {ifShowComments ? <Comments post={p} /> : null}
         </div>
       )}
     </>

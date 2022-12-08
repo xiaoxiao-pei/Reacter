@@ -5,26 +5,25 @@ import { MdOutlineAddCircle } from "react-icons/md";
 import "../css/posts.css";
 import NewCommentItem from "./NewCommentItem";
 
-function Comments({ postId }) {
+function Comments({ post }) {
   const [commentList, setCommentList] = useState([]);
 
   const [showAdd, setShowAdd] = useState(false);
+
   useEffect(() => {
     console.log("recAuthors");
 
-    fetch(`http://localhost:3001/comments/${postId}`, {
+    fetch(`http://localhost:3001/comments/${post._id}`, {
       method: "GET",
     })
       .then((data) => data.json())
       .then((data) => {
-        data.map((d) => {
-          setCommentList([...commentList, d]);
-        });
+        setCommentList([...data]);
       });
 
-    return () => {
-      setCommentList([]);
-    };
+    // return () => {
+    //   setCommentList([]);
+    // };
   }, []);
   console.log(commentList);
   // if ueserId does not exist, show the latest 5 posts
@@ -54,7 +53,7 @@ function Comments({ postId }) {
         ))}
       {showAdd ? (
         <>
-          <NewCommentItem postId={postId} updateComList={updateComList} />
+          <NewCommentItem post={post} updateComList={updateComList} />
           <FiMinusCircle className="addComment" onClick={removeComment} />
         </>
       ) : (

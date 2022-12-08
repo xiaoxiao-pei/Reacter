@@ -47,8 +47,8 @@ function App() {
       console.log("start counting down");
       const check = setInterval(() => {
         const timeDiff = new Date().getTime() - startTime;
-        if (timeDiff >= 10 * 10 * 1000) {
-          navigate("/Login");
+        if (timeDiff >= 60 * 10 * 1000) {
+          navigate("/login");
           localStorage.removeItem("user");
           setIsTimeOut(true);
           return;

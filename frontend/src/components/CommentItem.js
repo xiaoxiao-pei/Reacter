@@ -4,13 +4,13 @@ import { TiDeleteOutline } from "react-icons/ti";
 import React, { useState, useRef, useEffect } from "react";
 
 function CommentItem({ sc }) {
-  const user = localStorage.getItem("user");
-  const userId = user._id;
+  let user = localStorage.getItem("user");
+  user = user && JSON.parse(user);
   const [owner, setOwner] = useState({});
   const [disap, setDisap] = useState(false);
 
   useEffect(() => {
-    fetch(`http://localhost:3001/users/:${userId}`, {
+    fetch(`http://localhost:3001/users/${sc.userId}`, {
       method: "GET",
     })
       .then((data) => data.json())
@@ -24,11 +24,10 @@ function CommentItem({ sc }) {
   const deleteComment = (id) => {
     fetch(`http://localhost:3001/comments/${id}`, { method: "DELETE" })
       .then((data) => data.json())
-      .then((data) => console.log(data))
+
       .then(() => setDisap(true));
   };
 
-  console.log(userId);
   console.log(owner);
 
   return (
@@ -59,7 +58,7 @@ function CommentItem({ sc }) {
           </div>
 
           <div className="commentFooter">
-            {sc.userId === userId && (
+            {user && sc.userId === user._id && (
               <TiDeleteOutline
                 className="commentDelete"
                 onClick={() => deleteComment(sc._id)}
