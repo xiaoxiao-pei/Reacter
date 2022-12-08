@@ -58,7 +58,7 @@ let upload = multer({
 });
 
 app.get("/posts", async (req, res) => {
-  console.log("get postlist");
+  console.log("get postlist:  ---------");
   const posts = await postModel.find();
   console.log(posts);
   res.send(posts);
@@ -70,20 +70,36 @@ app.get("/posts/:userId", async (req, res) => {
   res.send(posts);
 });
 
-app.delete("/posts/:id", async (req, res) => {
+app.delete("/posts/:id/:photoname", async (req, res) => {
   console.log("delete post");
   id = req.params.id;
-  results = await postModel.deleteOne({ id: id });
+  results = await postModel.deleteOne({ _id: id });
+  let img = req.params.photoname;
+  let path = `photos/${img}`;
+  false.unlinkSync(path);
   res.send(results);
 });
 
-app.patch("/posts/:id", async (req, res) => {
+app.patch("/posts/likes/:id", async (req, res) => {
   const id = req.params.id;
   const postLikes = req.body.postLikes;
 
   const results = await postModel.updateOne(
-    { id: id },
+    { _id: id },
     { postLikes: postLikes }
+  );
+  console.log("matched: " + results.matchedCount);
+  console.log("modified: " + results.modifiedCount);
+  res.send(results);
+});
+
+app.patch("/posts/comments/:id", async (req, res) => {
+  const id = req.params.id;
+  const postCommentCount = req.body.postCommentCount;
+
+  const results = await postModel.updateOne(
+    { _id: id },
+    { postCommentCount: postCommentCount }
   );
   console.log("matched: " + results.matchedCount);
   console.log("modified: " + results.modifiedCount);
@@ -105,10 +121,11 @@ app.patch("/posts/:id", async (req, res) => {
 // });
 
 app.get("/users/:id", async (req, res) => {
-  console.log("get user------------");
-  const userid = req.params.id;
+  console.log("get single owner ------------");
+  const userId = req.params.id;
+  console.log("get single owner: ------------" + userId);
   const user = await userModel.findOne({
-    id: userid,
+    _id: userId,
   });
   console.log("owner:" + user);
   res.send(user);
@@ -119,12 +136,11 @@ app.post("/posts/create", upload.single("photo"), async (req, res) => {
   const postTitle = req.body.postTitle;
   console.log(postTitle);
   const postContent = req.body.postContent;
-  console.log(postTitle);
+  console.log(postContent);
   const userId = req.body.userId;
   console.log(userId);
   const postTime = req.body.postTime;
   console.log(postTime);
-  console.log(postLikes);
   const photo = req.file.filename;
   console.log(photo);
 
@@ -192,7 +208,6 @@ app.post("/comments/create", async (req, res) => {
   };
   await commentModel.create(comment);
   res.send(comment);
-  console.log(comment);
 });
 app.get("/users", async (req, res) => {
   console.log("get all users");
@@ -301,14 +316,13 @@ app.post("/users/login", async (request, response) => {
   response.send({ success: false });
 });
 
-app.patch("/users/:id", async (req, res) => {
-  console.log("add photo");
+app.patch("/users/posts/:id", async (req, res) => {
   const userId = req.params.id;
   const userPostCount = req.body.userPostCount;
 
   // console.log("now count is:" + req.body.postcount);
-  const results = await postModel.updateOne(
-    { id: userId },
+  const results = await userModel.updateOne(
+    { _id: userId },
     { userPostCount: userPostCount }
   );
   console.log("matched: " + results.matchedCount);
