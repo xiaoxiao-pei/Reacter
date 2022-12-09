@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import PostCard from "../components/PostCard";
 import { useParams } from "react-router-dom";
 import "../css/posts.css";
+import "../css/App.css";
 
 function Posts() {
   const [postList, setPostList] = useState([]);

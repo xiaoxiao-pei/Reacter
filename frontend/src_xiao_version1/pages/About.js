@@ -3,6 +3,12 @@ const About = () => {
     <div>
       <h2>About us</h2>
 
+      <div className="row">
+        <div className="col-12 col-sm-6 col-md-4">
+
+        </div>
+      </div>
+
       <table border="0">
         <tr>
           <th> Design inspiration </th>

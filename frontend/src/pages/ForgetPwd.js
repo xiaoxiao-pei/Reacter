@@ -83,7 +83,7 @@ function ForgetPwd() {
 
     return (
 
-        <div className='row'>
+        <div className='row pt-5'>
             <div className="form-body mt-5">
 
                 {/* after email sent successfully show login button */}

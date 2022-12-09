@@ -27,8 +27,8 @@ function Rec_list() {
   };
 
   return (
-    <div className="recList">
-      <div className="recListHead" colSpan={3}>
+    <div className="recList ">
+      <div className="recListHead py-3" colSpan={3}>
         Recommended
       </div>
 

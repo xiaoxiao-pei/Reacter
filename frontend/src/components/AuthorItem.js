@@ -30,7 +30,7 @@ function AuthorItem({ author, changeAuthorList }) {
         ></div>
       </td>
       <td>
-        <Link className="link" to={`/admin/profile/${author._id}`}>
+        <Link className="link" to={`/admin/author/profile/${author._id}`}>
           {author.userName}
         </Link>
       </td>

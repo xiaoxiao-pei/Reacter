@@ -29,6 +29,7 @@ function RegistrationForm() {
   const [passwordErr, setPasswordErr] = useState(false);
   const [rePasswordErr, setRePasswordErr] = useState(false);
   const [emailErr, setEmailErr] = useState(false);
+  
   const navigate = useNavigate();
 
   //validation for input fields

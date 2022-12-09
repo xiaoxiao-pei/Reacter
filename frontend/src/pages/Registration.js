@@ -29,6 +29,7 @@ function RegistrationForm() {
   const [passwordErr, setPasswordErr] = useState(false);
   const [rePasswordErr, setRePasswordErr] = useState(false);
   const [emailErr, setEmailErr] = useState(false);
+  
   const navigate = useNavigate();
 
   //validation for input fields
@@ -93,7 +94,7 @@ function RegistrationForm() {
   };
 
   return (
-    <div className="row">
+    <div className="row pt-5">
       {regisFinished ? (
         <div className="reactForm col-10 col-md-6 text-center px-0 py-5">
           <h3> Registarion Succeed! Please login</h3>

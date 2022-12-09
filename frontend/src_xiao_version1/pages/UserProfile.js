@@ -18,8 +18,6 @@ const theme = createTheme({
 function UserProfile() {
     const [isAdminLoggedIn, setIsAdminLoggedIn, isUserLoggedIn, setIsUserLoggedIn] = React.useContext(ReactContext);
 
-    console.log('isAdminLoggedIn');
-
     const navigate = useNavigate();
 
     const [user, setUser] = useState();
@@ -31,15 +29,10 @@ function UserProfile() {
 
     let userID = useParams().userId;
 
-    console.log('userID', userID);
-
     if (!userID){
          userID = JSON.parse(localStorage.getItem('user'))._id
     }
-
-    console.log('userID', userID);
     
-
     useEffect(() => {
 
         fetch("http://localhost:3001/user/" + userID, { method: "GET" })
@@ -149,7 +142,7 @@ function UserProfile() {
                             <div className='row my-3'>
                                 <div className='col-4 mt-3'><label className='d-flex justify-content-end'> Status:</label></div>
                                     {/* if is admin, he can edit the status */}
-                                {isAdminLoggedIn &&
+                                {isAdminLoggedIn && !user.userIsAdmin &&
                                     <>
                                         <div className='col-6'>
                                             <div className=" radio ">
@@ -184,7 +177,7 @@ function UserProfile() {
                                     </>
                                 }
 
-                                {!user.userIsAdmin &&
+                                {(!user.userIsAdmin || (isAdminLoggedIn && user.userIsAdmin)) &&
                                     <input className="col-6 form__input" type="text" value={user.userIsActive ? "Active" : "Banned"} readOnly={true} />
                                 }
                             </div>

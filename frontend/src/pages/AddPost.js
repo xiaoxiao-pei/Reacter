@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+
 // import "../css/App.css";
 import "../css/posts.css";
 import axios from "axios";
@@ -11,7 +12,6 @@ export const AddPost = () => {
   const [newPost, setNewPost] = useState({});
   let user = localStorage.getItem("user");
   user = user && JSON.parse(user);
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -56,10 +56,7 @@ export const AddPost = () => {
           .then((data) => {
             data.json();
           })
-          .then(() => alert("post is created successfully"))
-          .catch((err) => {
-            console.log(err);
-          });
+          .then(() => navigate("/user/posts"));
       });
   };
 
@@ -77,62 +74,70 @@ export const AddPost = () => {
   };
   return (
     <div className="addPost">
+      <h3 className="formTitle">Create a new post</h3>
+
       <form className="addPostForm" onSubmit={handleSubmit}>
-        <div>
-          <div style={{ textAlign: "center" }}>
-            <h3 className="formTitle">Create a new post</h3>
-          </div>
-          <div>
-            <input
-              maxLength={"100%"}
-              name="postTitle"
-              className="form__input mb-3"
-              type="text"
-              placeholder="Post Title"
-              onChange={addInfo}
-            />
-          </div>
-          <div>
-            <textarea
-              name="postContent"
-              className="form__input mb-3"
-              type="text"
-              placeholder="post content"
-              onChange={addInfo}
-            />
-          </div>
-          <div className="uploadImg">
-            <div
-              style={{
-                backgroundImage:
-                  newPost.postPhoto &&
-                  `url(http://localhost:3001/getImg/${newPost.userPhoto}`,
-                backgroundRepeat: "no-repeat",
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                width: "100%",
-                height: "150px",
-                border: "1px solid gray",
-                margin: "0 0 1rem 0 ",
-              }}
-            ></div>
+        <div
+          style={{
+            width: "80%",
+            margin: "1rem auto",
+          }}
+        >
+          <input
+            style={{
+              width: "100%",
+              height: "2rem",
+            }}
+            name="postTitle"
+            type="text"
+            placeholder="Post Title"
+            onChange={addInfo}
+          />
+        </div>
+        <div
+          style={{
+            width: "80%",
+            margin: "1rem auto",
+          }}
+        >
+          <textarea
+            name="postContent"
+            type="text"
+            placeholder="post content"
+            onChange={addInfo}
+          />
+        </div>
+        <div className="uploadImg">
+          {/* <div
+            style={{
+              backgroundImage:
+                newPost.postPhoto &&
+                `url(http://localhost:3001/getImg/${newPost.userPhoto}`,
+              backgroundRepeat: "no-repeat",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              width: "100%",
+              height: "150px",
+              border: "1px solid gray",
+              margin: "0 0 1rem 0 ",
+            }}
+          ></div> */}
+          <div className="addPostFooter">
             <input
               name="postPhoto"
-              className="form__input mb-3"
               id="file"
               onChange={addPhoto}
               type="file"
               accept="image/gif,image/jpeg,image/jpg,image/png"
               multiple
             />
-          </div>
 
-          <div className="form_button mb-4">
             <Button
               style={{
                 backgroundColor: "#c2dcb1",
                 border: "none",
                 color: "rgb(2, 2, 74)",
+                margin: "auto",
               }}
               type="submit"
             >

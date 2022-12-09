@@ -61,7 +61,7 @@ function LoginForm() {
       });
   }
   return (
-    <div className='row'>
+    <div className='row py-5'>
       <form className="reactForm col-8 col-md-6 col-lg-5 col-xl-4 text-center px-0 mt-5" onSubmit={handleSubmit}>
         <div className="form-body">
           <div>

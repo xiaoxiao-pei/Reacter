@@ -35,13 +35,14 @@
   }
 }
 
-.pageBody{
-  background-color:black; 
-  height:100vh;
+.page{
+ background-color:#f7e06d;
+  /* background-image: "../../public/background.jpg"; */
+  height:200vh;
 }
 
 footer {
-  position: absolute;
+  position: fixed;
   left: 0;
   bottom: 0;
   right: 0;
@@ -49,6 +50,16 @@ footer {
   text-align: center;
   color:#22A39F;
   padding: 10px 0 0 0;
+}
+
+.header{
+  font-size: 150%;
+}
+
+.menuBtn {
+  font-size: 0.8em;
+  border: none;
+  background-color: transparent;
 }
 
 .reactForm{

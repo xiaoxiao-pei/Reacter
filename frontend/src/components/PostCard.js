@@ -92,13 +92,9 @@ function PostCard({ p }) {
           headers: {
             "Content-type": "application/json;charset=UTF-8",
           },
-        })
-          .then(() => {
-            alert("successful deletion");
-          })
-          .catch((err) => {
-            alert("server error: " + err.message);
-          });
+        }).catch((err) => {
+          alert("server error: " + err.message);
+        });
       })
       .then(() => setDisap(true));
   };
@@ -121,7 +117,7 @@ function PostCard({ p }) {
   const edit = () => {
     setIfShowEdit(false);
   };
-
+  console.log(post);
   return (
     <>
       {!disap && (
@@ -150,15 +146,14 @@ function PostCard({ p }) {
               </div>
 
               <div className="postBody">
-                {user &&
-                  (post.userId === user._id && !ifShowEdit ? (
-                    <textarea
-                      defaultValue={post.postContent}
-                      ref={postContentRef}
-                    ></textarea>
-                  ) : (
-                    <div>{post.postContent}</div>
-                  ))}
+                {user && post.userId === user._id && !ifShowEdit ? (
+                  <textarea
+                    defaultValue={post.postContent}
+                    ref={postContentRef}
+                  ></textarea>
+                ) : (
+                  <div>{post.postContent}</div>
+                )}
               </div>
 
               <div className="postFooter">

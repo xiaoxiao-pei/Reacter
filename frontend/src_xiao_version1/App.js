@@ -47,11 +47,27 @@ export const ModeContext = React.createContext({
 });
 
 function App() {
-  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
-  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+
+  let isAdmin = false;
+  let isUser = false;
+  if(localStorage.getItem('user') !== null){
+    let user = JSON.parse(localStorage.getItem('user'));
+    isAdmin = user.userIsAdmin;
+    console.log("isAdmin" );
+    console.log(isAdmin);
+    isUser = !isAdmin;
+    console.log("isUser");
+    console.log(isUser);
+  }
+  
+  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(isAdmin? true: false);
+  console.log(isAdminLoggedIn);
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(isUser? true: false);
   const [isTimeOut, setIsTimeOut] = useState(false);
   const [startTime, setStartTime] = useState();
   const [isDark, setIsDark] = useState(true);
+
+  console.log()
 
   const user = localStorage.getItem("user");
 
@@ -63,7 +79,7 @@ function App() {
 
   useEffect(() => {
     if (user) {
-      console.log("start counting down");
+      //console.log("start counting down");
       const check = setInterval(() => {
         const timeDiff = new Date().getTime() - startTime;
         if (timeDiff >= 60 * 10 * 1000) {
@@ -72,7 +88,7 @@ function App() {
           setIsTimeOut(true);
           return;
         }
-        console.log("time left:" + timeDiff);
+        //console.log("time left:" + timeDiff);
       }, 1000);
       return () => {
         clearInterval(check);
@@ -116,6 +132,10 @@ return (
                     <Route path="posts" element={<PostsAdmin />} />
                     <Route path="authors" element={<Authors />} />
                     <Route path="author/profile/:userId" element={<UserProfile />} />
+                  <Route
+                    path="author/posts/:userId/:userName"
+                    element={<Posts />}
+                  />
                   </Route>
 
                   <Route path="user/" element={<UserLayout />} >

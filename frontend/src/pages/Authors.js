@@ -42,7 +42,7 @@ function Authors() {
             {authorList.length > 0 &&
               authorList.map((author, id) => (
                 <tr
-                  className="text-center "
+                  className="text-center"
                   style={{
                     backgroundColor: "aliceblue",
                     // margin: "3rem",

@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Navbar from 'react-bootstrap/Navbar';
 import Container from 'react-bootstrap/Container';
-import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
 import { ReactContext, ModeContext } from "../App";
 import Icon from '../components/Icon';
+import { FaMoon, FaSun} from "react-icons/fa";
 
 
 function Header() {
@@ -55,6 +55,15 @@ function Header() {
                     <Navbar.Brand href="/" className='px-5'>
                         <Icon />
                     </Navbar.Brand>
+
+                    <div className='container mt-4  fst-italic'>
+                        <h4 style={isDark? tabDark: tabLight }>
+                            {(isAdminLoggedIn || isUserLoggedIn)
+                                ? "Welcome! " + JSON.parse(localStorage.getItem('user')).userName
+                                : "Please login"}
+                        </h4>
+                    </div>
+
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className="me-auto">
@@ -71,7 +80,7 @@ function Header() {
 
                             {isAdminLoggedIn &&
                                 <>
-                                    <NavDropdown title="Management" id="collasible-nav-dropdown" >
+                                    <NavDropdown title="Account" id="collasible-nav-dropdown" >
                                         <NavDropdown.Item href="/admin">Your profile </NavDropdown.Item>
                                         <NavDropdown.Item href="/admin/authors">Authors</NavDropdown.Item>
                                         <NavDropdown.Item href="/admin/posts">Posts</NavDropdown.Item>
@@ -83,12 +92,13 @@ function Header() {
                                                 border: "none",
                                             }}
                                             onclick={handleLogout}
-                                        >Log out</button>
+                                        >Logout</button>
                                     </NavDropdown>
                                     <button
+                                        style={isDark ? tabDark : tabLight}
                                         className="menuBtn"
                                         onClick={handleLogout}>
-                                        Log out
+                                        Logout
                                     </button>
 
                                 </>
@@ -96,7 +106,7 @@ function Header() {
 
                             {isUserLoggedIn &&
                                 <>
-                                    <NavDropdown title="Management" id="collasible-nav-dropdown" >
+                                <NavDropdown title="Account" id="collasible-nav-dropdown" >
                                         <NavDropdown.Item href="/user">Your profile</NavDropdown.Item>
                                         <NavDropdown.Item href="/user/posts">Posts</NavDropdown.Item>
                                         <NavDropdown.Item href="/user/add">+Post</NavDropdown.Item>
@@ -114,7 +124,7 @@ function Header() {
                                         style={isDark ? btnDark : btnLight}
                                         className="menuBtn"
                                         onClick={handleLogout}>
-                                        Log out
+                                        Logout
                                     </button>
                                 </>
                             }
@@ -128,25 +138,20 @@ function Header() {
                                 className="menuBtn"
                                 style={{ color: "#C2DCB1" }}
                                 onClick={() => { setIsDark(false); }} >
-                                Light
+                                <FaSun  />
                             </button>
 
                             : <button
-                                className="menuBtn"                            
+                                className="menuBtn"
                                 onClick={() => { setIsDark(true); }}>
-                                Dark
+                                <FaMoon  />
                             </button>
                         }
                     </Navbar.Collapse>
                 </Container>
+
             </Navbar>
-            <div className='container my-3'>
-                <h4 style={{ color: 'white' }}>
-                    {(isAdminLoggedIn || isUserLoggedIn)
-                        ? "Welcome! " + JSON.parse(localStorage.getItem('user')).userName
-                        : "Please login"}
-                </h4>
-            </div>
+
 
         </div>
     );

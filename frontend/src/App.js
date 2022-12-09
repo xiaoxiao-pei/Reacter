@@ -33,31 +33,29 @@ export const ReactContext = React.createContext({
 });
 
 export const TimeoutContext = React.createContext({
-
   isTimeOut: false,
-  setIsTimeOut: () => { },
-
+  setIsTimeOut: () => {},
 });
 
 export const ModeContext = React.createContext({
-
   isDark: true,
-  setIsDark: () => { },
-
+  setIsDark: () => {},
 });
 
 function App() {
-
   let isAdmin = false;
   let isUser = false;
-  if(localStorage.getItem('user')){
-    let user = JSON.parse(localStorage.getItem('user'));
-    isAdmin = user.UserIsAdmin;
+
+  if (localStorage.getItem("user") !== null) {
+    let user = JSON.parse(localStorage.getItem("user"));
+    isAdmin = user.userIsAdmin;
     isUser = !isAdmin;
   }
-  
-  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(isAdmin? true: false);
-  const [isUserLoggedIn, setIsUserLoggedIn] = useState(isUser? true: false);
+  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(
+    isAdmin ? true : false
+  );
+
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(isUser ? true : false);
   const [isTimeOut, setIsTimeOut] = useState(false);
   const [startTime, setStartTime] = useState();
   const [isDark, setIsDark] = useState(true);
@@ -101,15 +99,14 @@ function App() {
   const timeOutProvide = [isTimeOut, setIsTimeOut];
 
   const modeProvide = [isDark, setIsDark];
-return (
+  return (
     <div>
       <ModeContext.Provider value={modeProvide}>
         <TimeoutContext.Provider value={timeOutProvide}>
           <ReactContext.Provider value={contextProvide}>
             <div onMouseMove={mouseMoveHandle}>
               <Routes>
-                <Route path="/" element={<MainLayout />} >
-
+                <Route path="/" element={<MainLayout />}>
                   <Route index element={<Home />} />
                   <Route path="about" element={<About />} />
                   <Route path="register" element={<Registration />} />
@@ -120,14 +117,21 @@ return (
                     element={<Posts />}
                   />
 
-                  <Route path="admin/" element={<AdminLayout />} >
+                  <Route path="admin/" element={<AdminLayout />}>
                     <Route index element={<UserProfile />} />
                     <Route path="posts" element={<PostsAdmin />} />
                     <Route path="authors" element={<Authors />} />
-                    <Route path="author/profile/:userId" element={<UserProfile />} />
+                    <Route
+                      path="author/profile/:userId"
+                      element={<UserProfile />}
+                    />
+                    <Route
+                      path="author/posts/:userId/:userName"
+                      element={<Posts />}
+                    />
                   </Route>
 
-                  <Route path="user/" element={<UserLayout />} >
+                  <Route path="user/" element={<UserLayout />}>
                     <Route index element={<UserProfile />} />
                     <Route path=":id/resetPWD" element={<ResetPwd />} />
                     <Route path="profile/:userid" element={<UserProfile />} />
@@ -146,10 +150,9 @@ return (
             </div>
           </ReactContext.Provider>
         </TimeoutContext.Provider>
-      </ModeContext.Provider >
-
-    </div>)
- 
+      </ModeContext.Provider>
+    </div>
+  );
 }
 
 export default App;

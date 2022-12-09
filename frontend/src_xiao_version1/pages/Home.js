@@ -4,8 +4,6 @@ import Posts from "./Posts";
 import Rec_list from "../components/Rec_list";
 import "../css/App.css";
 
-import { Header } from "../components/Header";
-
 const Home = () => {
   const [showCover, setShowCover] = useState(true);
 
@@ -21,7 +19,6 @@ const Home = () => {
 
   return (
     <>
-      <Header />
       <div className="home">
         {showCover ? (
           <div className="cover">

@@ -84,8 +84,8 @@ function UserProfile() {
 
 
     return (user &&
-        <div className='row'>
-            <form className="reactForm col-10 col-lg-8  text-center px-0" >
+        <div className='row pt-5'>
+            <form className="reactForm col-10 col-lg-8  text-center px-0 mt-5" >
                 <div className="form-body">
 
                     <div>
@@ -142,7 +142,7 @@ function UserProfile() {
                             <div className='row my-3'>
                                 <div className='col-4 mt-3'><label className='d-flex justify-content-end'> Status:</label></div>
                                     {/* if is admin, he can edit the status */}
-                                {isAdminLoggedIn &&
+                                {isAdminLoggedIn && !user.userIsAdmin &&
                                     <>
                                         <div className='col-6'>
                                             <div className=" radio ">
@@ -177,7 +177,7 @@ function UserProfile() {
                                     </>
                                 }
 
-                                {!user.userIsAdmin &&
+                                {(!user.userIsAdmin || (isAdminLoggedIn && user.userIsAdmin)) &&
                                     <input className="col-6 form__input" type="text" value={user.userIsActive ? "Active" : "Banned"} readOnly={true} />
                                 }
                             </div>

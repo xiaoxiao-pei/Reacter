@@ -12,7 +12,7 @@
   border-radius: 55px;
   background-color: #c2dcb1;
   padding: 1rem;
-  margin: 1% auto;
+  margin: 1rem auto;
 }
 .recListHead {
   background-color: #c2dcb1;
@@ -21,7 +21,7 @@
   border-radius: 10px 10px 0 0;
   color: orange;
   font-family: cursive;
-  font-size: 3rem;
+  font-size: 2.5rem;
   font-style: bold;
 }
 .authorImg {
