@@ -2,6 +2,7 @@ require('dotenv').config();
 const mongoose = require("mongoose");
 const userModel = require("./userModels");
 const postModel = require("./postModel");
+const commentModel = require("./commentModel");
 
 const validator = require('validator');
 const bcrypt = require('bcrypt');

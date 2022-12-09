@@ -73,7 +73,7 @@ export const AddPost = () => {
     });
   };
   return (
-    <div className="addPost">
+    <div className="addPost pt-5">
       <h3 className="formTitle">Create a new post</h3>
 
       <form className="addPostForm" onSubmit={handleSubmit}>

@@ -57,20 +57,23 @@ function App() {
 
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(isUser ? true : false);
   const [isTimeOut, setIsTimeOut] = useState(false);
-  const [startTime, setStartTime] = useState();
+
   const [isDark, setIsDark] = useState(true);
 
+  const navigate = useNavigate();
+
   const user = localStorage.getItem("user");
+
+  // set session restriction  
+  const [startTime, setStartTime] = useState();
 
   const mouseMoveHandle = () => {
     if (user) setStartTime(new Date().getTime());
   };
 
-  const navigate = useNavigate();
-
   useEffect(() => {
     if (user) {
-      //console.log("start counting down");
+      console.log("start counting down");
       const check = setInterval(() => {
         const timeDiff = new Date().getTime() - startTime;
         if (timeDiff >= 60 * 10 * 1000) {
@@ -79,7 +82,7 @@ function App() {
           setIsTimeOut(true);
           return;
         }
-        //console.log("time left:" + timeDiff);
+        console.log("time left:" + timeDiff);
       }, 1000);
       return () => {
         clearInterval(check);

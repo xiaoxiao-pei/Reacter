@@ -86,8 +86,8 @@ function PostCard({ p }) {
         fetch(`http://localhost:3001/users/posts/${owner._id}`, {
           method: "PATCH",
           body: JSON.stringify({
-            id: post._id,
-            userPostCount: owner.postCommentCount - 1,
+            id: owner._id,
+            userPostCount: owner.userPostCount - 1,
           }),
           headers: {
             "Content-type": "application/json;charset=UTF-8",

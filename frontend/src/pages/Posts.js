@@ -65,7 +65,7 @@ function Posts() {
   // !userId && postList.length > 5 && setPostList([...postList.slice(-5)]);
 
   return (
-    <div className="individualPost">
+    <div className="individualPost pt-5">
       <div className="postsHead">
         {!user && !paraUsername && (
           <h1 style={{ textAlign: "center" }}>Lastest posts</h1>

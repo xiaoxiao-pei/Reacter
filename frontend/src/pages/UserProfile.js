@@ -192,7 +192,7 @@ function UserProfile() {
                                 <input className="col-6 form__input" type="text" value={user.userJoinTime.substring(0, 10)} readOnly={true} />
                             </div>
 
-                            {!user.userIsAdmin &&
+                            {isUserLoggedIn &&
                                 <div className='row my-3'>
                                     <ThemeProvider theme={theme}>
                                         <Button className='col-10' variant="contained"
