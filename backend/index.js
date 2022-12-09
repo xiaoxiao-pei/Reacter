@@ -564,7 +564,10 @@ app.delete("/users/:id", async (req, res) => {
 });
 // update the userPostCount field value of one user with the id param
 app.patch("/users/posts/:id", async (req, res) => {
+  console.log("update userPost");
+
   const userId = req.params.id;
+  console.log("update userPost");
   const userPostCount = req.body.userPostCount;
 
   // console.log("now count is:" + req.body.postcount);

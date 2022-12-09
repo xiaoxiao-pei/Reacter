@@ -56,7 +56,17 @@ function Header() {
       >
         <Container>
           <Navbar.Brand href="/" className="px-5">
-            <Icon />
+            <div style={{ display: "flex", justifyContent: "flex-start" }}>
+              <Icon />
+              <div className="container my-3">
+                <h4 style={{ color: "yellow" }}>
+                  {isAdminLoggedIn || isUserLoggedIn
+                    ? "Welcome! " +
+                      JSON.parse(localStorage.getItem("user")).userName
+                    : "Please login"}
+                </h4>
+              </div>
+            </div>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
@@ -175,13 +185,7 @@ function Header() {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-      <div className="container my-3">
-        <h4 style={{ color: "black" }}>
-          {isAdminLoggedIn || isUserLoggedIn
-            ? "Welcome! " + JSON.parse(localStorage.getItem("user")).userName
-            : "Please login"}
-        </h4>
-      </div>
+      <div style={{ width: "100%", height: "2rem" }}></div>
     </div>
   );
 }

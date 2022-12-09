@@ -108,20 +108,6 @@ export const AddPost = () => {
           />
         </div>
         <div className="uploadImg">
-          {/* <div
-            style={{
-              backgroundImage:
-                newPost.postPhoto &&
-                `url(http://localhost:3001/getImg/${newPost.userPhoto}`,
-              backgroundRepeat: "no-repeat",
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              width: "100%",
-              height: "150px",
-              border: "1px solid gray",
-              margin: "0 0 1rem 0 ",
-            }}
-          ></div> */}
           <div className="addPostFooter">
             <input
               name="postPhoto"

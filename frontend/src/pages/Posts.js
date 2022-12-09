@@ -31,7 +31,7 @@ function Posts() {
       })
         .then((data) => data.json())
         .then((data) => {
-          setPostList([...data.slice(-5)]);
+          setPostList(!user ? [...data.slice(-5).reverse()] : [...data]);
         });
     } else {
       if (paraUsername) {
@@ -83,6 +83,12 @@ function Posts() {
             </h1>
           </>
         )}
+        {user && user.userIsAdmin && !paraUsername && (
+          <>
+            <h1 style={{ textAlign: "center" }}>All posts</h1>
+          </>
+        )}
+
         {(!user && paraUsername) ||
           (user && user.userIsAdmin && paraUsername && (
             <>

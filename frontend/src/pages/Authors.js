@@ -27,7 +27,6 @@ function Authors() {
     setAuthorList((authorList) => authorList.filter((a) => a._id !== id));
   return (
     <>
-      <h2 className="userListTitle">All users List:</h2>
       <div class="authorList">
         <Table striped className="table-borderless" hover>
           <thead className="recListHead">
