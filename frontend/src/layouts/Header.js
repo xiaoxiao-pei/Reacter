@@ -4,7 +4,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import Navbar from 'react-bootstrap/Navbar';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
-import { redirect, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { ReactContext, ModeContext } from "../App";
 import Icon from '../components/Icon';
 
@@ -14,6 +14,22 @@ function Header() {
     const navigate = useNavigate();
     const [isAdminLoggedIn, setIsAdminLoggedIn, isUserLoggedIn, setIsUserLoggedIn] = React.useContext(ReactContext);
     const [isDark, setIsDark] = React.useContext(ModeContext);
+
+    const btnDark = {
+        backgroundColor: `black`,
+        color: "#C2DCB1",
+    }
+    const btnLight = {
+        backgroundColor: "#C2DCB1",
+        color: "black",
+    }
+
+    const tabDark = {
+        color: "#C2DCB1",
+    }
+    const tabLight = {
+        color: "black",
+    }
 
     const handleLogout = () => {
         console.log("logout start")
@@ -28,30 +44,35 @@ function Header() {
 
 
     return (
-        <div >
-            <Navbar collapseOnSelect expand="md" bg={isDark ? "dark" : "light"} variant="dark">
+        <div className="header">
+            <Navbar
+                collapseOnSelect
+                expand="md"
+                style={isDark ? { backgroundColor: "black" } : { backgroundColor: "#C2DCB1" }}
+                variant="dark"
+            >
                 <Container>
-                    <Navbar.Brand href="#home" className='px-5'>
+                    <Navbar.Brand href="/" className='px-5'>
                         <Icon />
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className="me-auto">
-                            <Nav.Link href="/"> Home</Nav.Link>
-                            <Nav.Link href="/about">About</Nav.Link>
+                            <Nav.Link href="/" style={isDark ? tabDark : tabLight}> Home</Nav.Link>
+                            <Nav.Link href="/about" style={isDark ? tabDark : tabLight}>About</Nav.Link>
 
                             {/* if no one login, show Register and login button */}
                             {!(isAdminLoggedIn || isUserLoggedIn) &&
                                 <>
-                                    <Nav.Link href="/register">Register</Nav.Link>
-                                    <Nav.Link href="/login">Login</Nav.Link>
+                                    <Nav.Link href="/register" style={isDark ? tabDark : tabLight}>Register</Nav.Link>
+                                    <Nav.Link href="/login" style={isDark ? tabDark : tabLight}>Login</Nav.Link>
                                 </>
                             }
 
                             {isAdminLoggedIn &&
                                 <>
-                                    <NavDropdown title="Management" id="collasible-nav-dropdown">
-                                        <NavDropdown.Item href="/admin">Your profile</NavDropdown.Item>
+                                    <NavDropdown title="Management" id="collasible-nav-dropdown" >
+                                        <NavDropdown.Item href="/admin">Your profile </NavDropdown.Item>
                                         <NavDropdown.Item href="/admin/authors">Authors</NavDropdown.Item>
                                         <NavDropdown.Item href="/admin/posts">Posts</NavDropdown.Item>
                                         <NavDropdown.Divider />
@@ -64,18 +85,18 @@ function Header() {
                                             onclick={handleLogout}
                                         >Log out</button>
                                     </NavDropdown>
-                                    <Button
-                                        variant="dark"
+                                    <button
+                                        className="menuBtn"
                                         onClick={handleLogout}>
                                         Log out
-                                    </Button>
+                                    </button>
 
                                 </>
                             }
 
                             {isUserLoggedIn &&
                                 <>
-                                    <NavDropdown title="Management" id="collasible-nav-dropdown">
+                                    <NavDropdown title="Management" id="collasible-nav-dropdown" >
                                         <NavDropdown.Item href="/user">Your profile</NavDropdown.Item>
                                         <NavDropdown.Item href="/user/posts">Posts</NavDropdown.Item>
                                         <NavDropdown.Item href="/user/add">+Post</NavDropdown.Item>
@@ -89,11 +110,12 @@ function Header() {
                                             onclick={handleLogout}
                                         >Log out</button>
                                     </NavDropdown>
-                                    <Button
-                                        variant="dark"
+                                    <button
+                                        style={isDark ? btnDark : btnLight}
+                                        className="menuBtn"
                                         onClick={handleLogout}>
                                         Log out
-                                    </Button>
+                                    </button>
                                 </>
                             }
 
@@ -102,8 +124,18 @@ function Header() {
 
                         {/* if is login, show logout button */}
                         {isDark
-                            ? <button onClick={() => { setIsDark(false); }} > Light </button>
-                            : <button onClick={() => { setIsDark(true); }}> Dark </button>
+                            ? <button
+                                className="menuBtn"
+                                style={{ color: "#C2DCB1" }}
+                                onClick={() => { setIsDark(false); }} >
+                                Light
+                            </button>
+
+                            : <button
+                                className="menuBtn"                            
+                                onClick={() => { setIsDark(true); }}>
+                                Dark
+                            </button>
                         }
                     </Navbar.Collapse>
                 </Container>

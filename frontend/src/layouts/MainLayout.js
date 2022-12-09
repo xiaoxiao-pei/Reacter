@@ -6,9 +6,9 @@ import Container from "react-bootstrap/Container";
 
 function MainLayout() {
   return (
-    <div className="pageBody" >
+    <div className="page" >
     <Header /> 
-      <Container>
+      <Container >
         <Outlet />
       </Container>
 
