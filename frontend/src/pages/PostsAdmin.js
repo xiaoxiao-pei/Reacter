@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Posts } from "./pages/Posts";
+import "../css/posts.css";
 
 function PostsAdmin() {
   const user = localStorage.getItem("user");
@@ -13,9 +14,9 @@ function PostsAdmin() {
   }, []);
 
   return (
-    <>
+    <div className="inDisplay">
       <Posts />
-    </>
+    </div>
   );
 }
 export default PostsAdmin;

@@ -2,9 +2,7 @@ import React, { useEffect, useState } from "react";
 // import "../css/home.css";
 import Posts from "./Posts";
 import Rec_list from "../components/Rec_list";
-import "../css/home.css";
-
-import { Header } from "../components/Header";
+import "../css/App.css";
 
 const Home = () => {
   const [showCover, setShowCover] = useState(true);
@@ -13,7 +11,7 @@ const Home = () => {
     console.log("time");
     let wait = setTimeout(() => {
       setShowCover(false);
-    }, 2000);
+    }, 1000);
     return () => {
       clearTimeout(wait);
     };
@@ -21,7 +19,6 @@ const Home = () => {
 
   return (
     <>
-      <Header />
       <div className="home">
         {showCover ? (
           <div className="cover">

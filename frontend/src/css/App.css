@@ -1,9 +1,7 @@
 .App {
   text-align: center;
 }
-.container {
-  background-color: black;
-}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -15,12 +13,12 @@
   }
 }
 
-.App-header {
+/* .App-header {
   background-color: #282c34;
   min-height: 15vh;
   font-size: calc(10px + 2vmin);
-  color: #22a39f;
-}
+  color: #22A39F;
+} */
 
 .App-link {
   color: #22a39f;
@@ -36,23 +34,34 @@
   }
 }
 
-.pageBody {
-  background-color: black;
+.page {
+  background-color: #f7e06d;
+  /* background-image: "../../public/background.jpg"; */
+  height: 200vh;
 }
 
 footer {
-  position: absolute;
+  position: fixed;
   left: 0;
   bottom: 0;
   right: 0;
   background-color: #282c34;
   text-align: center;
   color: #22a39f;
-  padding: 10px 0 10px 0;
+  padding: 10px 0 0 0;
 }
 
-.regisForm,
-.loginForm {
+.header {
+  font-size: 150%;
+}
+
+.menuBtn {
+  font-size: 0.8em;
+  border: none;
+  background-color: transparent;
+}
+
+.reactForm {
   margin: 10px auto;
   background-color: white;
   border-radius: 10px;
@@ -65,7 +74,7 @@ footer {
 }
 
 .form__input {
-  padding: 10px 0 5px 5px;
+  padding: 10px 0 0 5px;
   border: none;
   border-bottom: solid 1px black;
 }
@@ -82,4 +91,13 @@ footer {
 
 .inputErr {
   color: red;
+}
+
+.iconBtn {
+  border: none;
+  background-color: transparent;
+}
+
+.welcome {
+  display: flex;
 }

@@ -35,10 +35,13 @@ function Comments({ post }) {
     setShowAdd(false);
   };
 
-  const updateComList = (newComment) => {
+  const addComList = (newComment) => {
     setCommentList((commentList) => [...commentList, newComment]);
     setShowAdd(false);
   };
+
+  const deletComList = (id) =>
+    setCommentList((commentList) => commentList.filter((c) => c._id !== id));
 
   return (
     <div className="postComments">
@@ -48,12 +51,12 @@ function Comments({ post }) {
       {commentList.length > 0 &&
         commentList.map((c, id) => (
           <div key={id}>
-            <CommentItem sc={c} />
+            <CommentItem sc={c} deletComList={deletComList} />
           </div>
         ))}
       {showAdd ? (
         <>
-          <NewCommentItem post={post} updateComList={updateComList} />
+          <NewCommentItem post={post} addComList={addComList} />
           <FiMinusCircle className="addComment" onClick={removeComment} />
         </>
       ) : (

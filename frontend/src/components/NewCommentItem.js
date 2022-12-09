@@ -3,7 +3,7 @@ import { MdOutlineDoneOutline } from "react-icons/md";
 import { useState } from "react";
 import "../css/posts.css";
 import { IoCompassOutline } from "react-icons/io5";
-function NewCommentItem({ post, updateComList }) {
+function NewCommentItem({ post, addComList }) {
   let user = localStorage.getItem("user");
   user = user && JSON.parse(user);
 
@@ -42,7 +42,7 @@ function NewCommentItem({ post, updateComList }) {
           console.log(err);
         });
       })
-      .then(() => updateComList(newCom));
+      .then(() => addComList(newCom));
   };
 
   const changeHandle = (e) => {
@@ -68,7 +68,7 @@ function NewCommentItem({ post, updateComList }) {
           <div className="commentHeadUsername">{user.userName}</div>
         </div>
         <div className="commentHeadRight">
-          <span>{addDate}</span>
+          <span>{newCom.commentTime}</span>
         </div>
       </div>
 

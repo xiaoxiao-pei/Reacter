@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import PostCard from "../components/PostCard";
 import { useParams } from "react-router-dom";
 import "../css/posts.css";
+import "../css/App.css";
 
 function Posts() {
   const [postList, setPostList] = useState([]);
@@ -30,7 +31,7 @@ function Posts() {
       })
         .then((data) => data.json())
         .then((data) => {
-          setPostList([...data]);
+          setPostList([...data.slice(-5)]);
         });
     } else {
       if (paraUsername) {
@@ -85,9 +86,7 @@ function Posts() {
         {(!user && paraUsername) ||
           (user && user.userIsAdmin && paraUsername && (
             <>
-              <h1 style={{ textAlign: "center" }}>
-                <span>Posts of {paraUsername}</span>
-              </h1>
+              <h1 style={{ textAlign: "center" }}>Posts of {paraUsername}</h1>
             </>
           ))}
       </div>

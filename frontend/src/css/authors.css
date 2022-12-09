@@ -12,7 +12,7 @@
   border-radius: 55px;
   background-color: #c2dcb1;
   padding: 1rem;
-  margin: 1% auto;
+  margin: 1rem auto;
 }
 .recListHead {
   background-color: #c2dcb1;
@@ -55,6 +55,11 @@
 .postIcon {
   color: #b1dcb4;
   margin-right: 0.5rem;
+}
+
+.postIcon:hover {
+  color: aquamarine;
+  transform: scale(1.3);
 }
 
 .userDeleteIcon {
